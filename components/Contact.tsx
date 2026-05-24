@@ -43,6 +43,15 @@ export default function Contact() {
             </svg>
             github.com/parksungyun0411
           </a>
+          <a
+            href="https://velog.io/@parksungyun0411"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 backdrop-blur border border-emerald-400/30 rounded-lg transition-colors"
+          >
+            <span className="font-bold text-base text-emerald-300">v</span>
+            <span>velog.io/@parksungyun0411</span>
+          </a>
         </div>
       </div>
     </section>
