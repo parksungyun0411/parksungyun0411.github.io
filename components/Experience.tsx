@@ -9,7 +9,7 @@ const experiences = [
     current: true,
   },
   {
-    period: "2025",
+    period: "2025.04 ~ 2025.10",
     role: "AI 백엔드 개발자",
     company: "한이음 드림업 — Project NerdMath",
     bullets: [
@@ -19,7 +19,7 @@ const experiences = [
     ],
   },
   {
-    period: "2025",
+    period: "2025.05 ~ 2025.08",
     role: "클라우드·엔터프라이즈 서비스 운영 인턴",
     company: "자빅스 (Zabix)",
     bullets: [
