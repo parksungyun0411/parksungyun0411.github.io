@@ -14,10 +14,16 @@ export default function Contact() {
         </p>
         <div className="flex flex-wrap gap-3">
           <a
-            href="mailto:dacon@dacon.io"
+            href="mailto:psyreo93@gmail.com"
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors font-medium"
           >
-            ✉ dacon@dacon.io
+            ✉ psyreo93@gmail.com
+          </a>
+          <a
+            href="mailto:psyreo@naver.com"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 backdrop-blur text-white border border-white/20 rounded-lg transition-colors font-medium"
+          >
+            ✉ psyreo@naver.com
           </a>
           <a
             href="https://github.com/parksungyun0411"
