@@ -26,6 +26,13 @@ export default function Contact() {
             ✉ psyreo@naver.com
           </a>
           <a
+            href="mailto:sy.park@dacon.io"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 backdrop-blur text-white border border-white/20 rounded-lg transition-colors font-medium"
+          >
+            ✉ sy.park@dacon.io
+            <span className="text-xs text-zinc-400 ml-1">(work)</span>
+          </a>
+          <a
             href="https://github.com/parksungyun0411"
             target="_blank"
             rel="noopener noreferrer"

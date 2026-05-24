@@ -1,10 +1,10 @@
 const experiences = [
   {
-    period: "2026 ~ 현재",
-    role: "AI / 데이터 컨설턴트",
-    company: "데이콘 AX 컨설팅",
+    period: "2026.04 ~ 현재",
+    role: "운영 / 기획 / QA 매니저",
+    company: "DACON",
     bullets: [
-      "AI/데이터 기반 컨설팅 업무 진행 중",
+      "데이터 사이언스 경진대회 플랫폼 운영, 신규 컴피티션·서비스 기획, QA 전반",
     ],
     current: true,
   },
