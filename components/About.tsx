@@ -20,7 +20,7 @@ export default function About() {
             — Graph-RAG 같은 비결정적 모듈을 결정적인 백엔드로 wrap하고, 캐싱·인덱싱·관측 가능성으로 production-grade로 끌어올리는 일.
           </p>
           <p>
-            현재 <strong className="text-zinc-900">DACON</strong>에서 운영 / 기획 / QA 매니저로 근무 중 (2026.04~). 이전엔 자빅스에서 클라우드·엔터프라이즈 서비스 운영, 한이음 드림업에서 AI 백엔드 개발.
+            현재 <strong className="text-zinc-900">DACON</strong>에서 운영 / 기획 / QA 매니저로 근무 중 (2026.04~). 학부 4학년(2025) 여름방학에 자빅스에서 클라우드·엔터프라이즈 서비스 운영 인턴, 같은 해 한이음 드림업 프로그램에서 NerdMath 프로젝트 진행.
           </p>
         </div>
         <aside className="bg-zinc-100 rounded-xl p-6 space-y-3 text-sm">

@@ -9,19 +9,9 @@ const experiences = [
     current: true,
   },
   {
-    period: "2025.04 ~ 2025.10",
-    role: "AI 백엔드 개발자",
-    company: "한이음 드림업 — Project NerdMath",
-    bullets: [
-      "FastAPI + LangChain + LangGraph로 Graph-RAG 맞춤 학습경로 추천 엔진 구현",
-      "MongoDB + Neo4j로 개념 그래프 분석 + 진단 결과 기반 취약 개념 자동 보완",
-      "GPU Batch Inference + WebSocket 스트림 기반 < 50ms 응답 달성",
-    ],
-  },
-  {
     period: "2025.05 ~ 2025.08",
     role: "클라우드·엔터프라이즈 서비스 운영 인턴",
-    company: "자빅스 (Zabix)",
+    company: "자빅스 (Zabix) · 여름방학 인턴",
     bullets: [
       "AWS · Azure 운영, EC2 / Microsoft 365 / IDMS 운영 지원",
       "공공 메신저 '온톡' (사용자 15만, 일 800만 건) 기획·운영 참여",
