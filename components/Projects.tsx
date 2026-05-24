@@ -1,16 +1,5 @@
 const projects = [
   {
-    name: "jeju-emotion-analysis",
-    title: "제주어 다중감정분류",
-    subtitle: "졸업 프로젝트 · 2025 가을",
-    description:
-      "GPT-4o로 라벨링한 제주어/표준어 병렬 데이터에 TF-IDF + N-gram + 고전 ML 분류기(LR/SVM/RF/NB)로 7가지 감정 분류. KoELECTRA 베이스라인 대비 데이터 정제 기준 재설계로 성능 개선.",
-    tags: ["Python", "scikit-learn", "GPT-4o", "TF-IDF"],
-    url: "https://github.com/parksungyun0411/jeju-emotion-analysis",
-    badge: "🎓 졸업 프로젝트",
-    color: "from-rose-500 to-pink-600",
-  },
-  {
     name: "liar-game",
     title: "Liar Game",
     subtitle: "네트워크 프로그래밍 팀 프로젝트 · 3-1",
