@@ -1,50 +1,53 @@
 export default function About() {
   return (
-    <section id="about" className="max-w-5xl mx-auto px-6 py-20">
-      <div className="text-sm font-mono text-blue-600 mb-3">## about</div>
-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-8">
-        About Me
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 space-y-4 text-zinc-700 leading-relaxed">
-          <p>
-            건국대학교 스마트ICT융합공학과 / 응용통계학과 다전공.{" "}
-            <strong className="text-zinc-900">2026년 2월 졸업 예정.</strong>{" "}
-            데이터·통계 백그라운드 위에 백엔드/AI 엔지니어링을 쌓아가는 중.
-          </p>
-          <p>
-            관심 영역은{" "}
-            <strong className="text-zinc-900">
-              실시간으로 수만 명에게 안정적으로 동작하는 AI 시스템
-            </strong>{" "}
-            — Graph-RAG 같은 비결정적 모듈을 결정적인 백엔드로 wrap하고, 캐싱·인덱싱·관측 가능성으로 production-grade로 끌어올리는 일.
-          </p>
-          <p>
-            현재 <strong className="text-zinc-900">DACON</strong>에서 운영 / 기획 / QA 매니저로 근무 중 (2026.04~). 학부 4학년(2025) 여름방학에 자빅스에서 클라우드·엔터프라이즈 서비스 운영 인턴, 같은 해 한이음 드림업 프로그램에서 NerdMath 프로젝트 진행.
-          </p>
-        </div>
-        <aside className="bg-zinc-100 rounded-xl p-6 space-y-3 text-sm">
-          <div>
-            <div className="text-zinc-500 mb-1">학력</div>
-            <div className="text-zinc-900 font-medium">
-              건국대학교 스마트ICT융합공학과
-            </div>
-            <div className="text-zinc-600 text-xs">
-              응용통계학과 다전공 · 2020.03 ~ 2026.02
-            </div>
-          </div>
-          <div>
-            <div className="text-zinc-500 mb-1">현재</div>
-            <div className="text-zinc-900 font-medium">DACON</div>
-            <div className="text-zinc-600 text-xs">
-              운영 / 기획 / QA 매니저 · 2026.04~
-            </div>
-          </div>
-          <div>
-            <div className="text-zinc-500 mb-1">위치</div>
-            <div className="text-zinc-900 font-medium">Seoul, KR</div>
-          </div>
-        </aside>
+    <section id="about" className="scroll-mt-24">
+      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
+        01 — About
+      </p>
+      <h2 className="mb-8 text-2xl font-bold text-zinc-900">About</h2>
+
+      <div className="space-y-5 text-zinc-600 leading-relaxed">
+        <p>
+          건국대학교 <strong className="font-medium text-zinc-800">스마트ICT융합공학과</strong>와{" "}
+          <strong className="font-medium text-zinc-800">응용통계학과</strong>를 다전공하고
+          2026년 2월에 졸업했습니다. 데이터·통계 백그라운드 위에 백엔드와 AI 엔지니어링을
+          쌓아 왔습니다.
+        </p>
+        <p>
+          주된 관심은{" "}
+          <strong className="font-medium text-zinc-800">
+            실시간으로 수만 명에게 안정적으로 동작하는 AI 시스템
+          </strong>
+          입니다. Graph-RAG 같은 비결정적 모듈을 결정적인 백엔드로 감싸고, 캐싱·인덱싱·관측
+          가능성을 더해 production-grade로 끌어올리는 일을 좋아합니다.
+        </p>
+        <p>
+          현재 <strong className="font-medium text-zinc-800">DACON</strong>에서 운영 / 기획 / QA
+          매니저로 근무 중입니다 (2026.04~). 2025년 여름에는{" "}
+          <strong className="font-medium text-zinc-800">자빅스</strong>에서 클라우드·엔터프라이즈
+          서비스 운영 인턴을 했고, 같은 해 한이음 드림업에서{" "}
+          <strong className="font-medium text-zinc-800">NerdMath</strong> 프로젝트를
+          진행했습니다.
+        </p>
+      </div>
+
+      <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5">
+        <dl className="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-4 text-sm">
+          <dt className="text-zinc-400">학력</dt>
+          <dd className="text-zinc-800">
+            건국대학교 스마트ICT융합공학과 · 응용통계학과 다전공
+            <span className="ml-2 text-zinc-400 text-xs">2020.03 – 2026.02</span>
+          </dd>
+
+          <dt className="text-zinc-400">현재</dt>
+          <dd className="text-zinc-800">
+            DACON — 운영 / 기획 / QA 매니저
+            <span className="ml-2 text-zinc-400 text-xs">2026.04~</span>
+          </dd>
+
+          <dt className="text-zinc-400">위치</dt>
+          <dd className="text-zinc-800">Seoul, KR</dd>
+        </dl>
       </div>
     </section>
   );

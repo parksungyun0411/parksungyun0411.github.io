@@ -1,0 +1,1420 @@
+diff --git a/app/globals.css b/app/globals.css
+index a2dc41e..b32d8f7 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -2,7 +2,7 @@
+ 
+ :root {
+   --background: #ffffff;
+-  --foreground: #171717;
++  --foreground: #18181b;
+ }
+ 
+ @theme inline {
+@@ -12,15 +12,14 @@
+   --font-mono: var(--font-geist-mono);
+ }
+ 
+-@media (prefers-color-scheme: dark) {
+-  :root {
+-    --background: #0a0a0a;
+-    --foreground: #ededed;
+-  }
++html {
++  scroll-behavior: smooth;
+ }
+ 
+ body {
+   background: var(--background);
+   color: var(--foreground);
+-  font-family: Arial, Helvetica, sans-serif;
++  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
++    "Segoe UI", "Pretendard", sans-serif;
++  -webkit-font-smoothing: antialiased;
+ }
+diff --git a/app/layout.tsx b/app/layout.tsx
+index dce1705..9006fc2 100644
+--- a/app/layout.tsx
++++ b/app/layout.tsx
+@@ -35,7 +35,7 @@ export default function RootLayout({
+       lang="ko"
+       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+     >
+-      <body className="min-h-full bg-zinc-50 text-zinc-900">{children}</body>
++      <body className="min-h-full bg-white text-zinc-900">{children}</body>
+     </html>
+   );
+ }
+diff --git a/app/page.tsx b/app/page.tsx
+index 7bc0f95..dc434ae 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,28 +1,33 @@
+-import Hero from "@/components/Hero";
++import Sidebar from "@/components/Sidebar";
+ import About from "@/components/About";
++import Experience from "@/components/Experience";
+ import FeaturedProject from "@/components/FeaturedProject";
+ import Projects from "@/components/Projects";
+ import Skills from "@/components/Skills";
+-import Experience from "@/components/Experience";
+ import Credentials from "@/components/Credentials";
+ import Contact from "@/components/Contact";
+-import Nav from "@/components/Nav";
+ 
+ export default function Home() {
+   return (
+-    <main className="min-h-screen">
+-      <Nav />
+-      <Hero />
+-      <About />
+-      <FeaturedProject />
+-      <Projects />
+-      <Skills />
+-      <Experience />
+-      <Credentials />
+-      <Contact />
+-      <footer className="text-center text-xs text-zinc-500 py-8 border-t border-zinc-200">
+-        © 2026 박성윤 · Built with Next.js + Tailwind · Hosted on GitHub Pages
+-      </footer>
+-    </main>
++    <div className="mx-auto max-w-6xl px-6 lg:px-12">
++      <div className="lg:flex lg:gap-16">
++        <Sidebar />
++        <main
++          id="content"
++          className="py-16 lg:w-7/12 lg:py-28 space-y-20 lg:space-y-28"
++        >
++          <About />
++          <Experience />
++          <FeaturedProject />
++          <Projects />
++          <Skills />
++          <Credentials />
++          <Contact />
++          <footer className="pt-8 text-xs text-zinc-400">
++            © 2026 박성윤 · Built with Next.js + Tailwind · Hosted on GitHub Pages
++          </footer>
++        </main>
++      </div>
++    </div>
+   );
+ }
+diff --git a/components/About.tsx b/components/About.tsx
+index 0455fde..a121f2b 100644
+--- a/components/About.tsx
++++ b/components/About.tsx
+@@ -1,50 +1,53 @@
+ export default function About() {
+   return (
+-    <section id="about" className="max-w-5xl mx-auto px-6 py-20">
+-      <div className="text-sm font-mono text-blue-600 mb-3">## about</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-8">
+-        About Me
+-      </h2>
+-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+-        <div className="md:col-span-2 space-y-4 text-zinc-700 leading-relaxed">
+-          <p>
+-            건국대학교 스마트ICT융합공학과 / 응용통계학과 다전공.{" "}
+-            <strong className="text-zinc-900">2026년 2월 졸업 예정.</strong>{" "}
+-            데이터·통계 백그라운드 위에 백엔드/AI 엔지니어링을 쌓아가는 중.
+-          </p>
+-          <p>
+-            관심 영역은{" "}
+-            <strong className="text-zinc-900">
+-              실시간으로 수만 명에게 안정적으로 동작하는 AI 시스템
+-            </strong>{" "}
+-            — Graph-RAG 같은 비결정적 모듈을 결정적인 백엔드로 wrap하고, 캐싱·인덱싱·관측 가능성으로 production-grade로 끌어올리는 일.
+-          </p>
+-          <p>
+-            현재 <strong className="text-zinc-900">DACON</strong>에서 운영 / 기획 / QA 매니저로 근무 중 (2026.04~). 학부 4학년(2025) 여름방학에 자빅스에서 클라우드·엔터프라이즈 서비스 운영 인턴, 같은 해 한이음 드림업 프로그램에서 NerdMath 프로젝트 진행.
+-          </p>
+-        </div>
+-        <aside className="bg-zinc-100 rounded-xl p-6 space-y-3 text-sm">
+-          <div>
+-            <div className="text-zinc-500 mb-1">학력</div>
+-            <div className="text-zinc-900 font-medium">
+-              건국대학교 스마트ICT융합공학과
+-            </div>
+-            <div className="text-zinc-600 text-xs">
+-              응용통계학과 다전공 · 2020.03 ~ 2026.02
+-            </div>
+-          </div>
+-          <div>
+-            <div className="text-zinc-500 mb-1">현재</div>
+-            <div className="text-zinc-900 font-medium">DACON</div>
+-            <div className="text-zinc-600 text-xs">
+-              운영 / 기획 / QA 매니저 · 2026.04~
+-            </div>
+-          </div>
+-          <div>
+-            <div className="text-zinc-500 mb-1">위치</div>
+-            <div className="text-zinc-900 font-medium">Seoul, KR</div>
+-          </div>
+-        </aside>
++    <section id="about" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
++        01 — About
++      </p>
++      <h2 className="mb-8 text-2xl font-bold text-zinc-900">About</h2>
++
++      <div className="space-y-5 text-zinc-600 leading-relaxed">
++        <p>
++          건국대학교 <strong className="font-medium text-zinc-800">스마트ICT융합공학과</strong>와{" "}
++          <strong className="font-medium text-zinc-800">응용통계학과</strong>를 다전공하고
++          2026년 2월에 졸업했습니다. 데이터·통계 백그라운드 위에 백엔드와 AI 엔지니어링을
++          쌓아 왔습니다.
++        </p>
++        <p>
++          주된 관심은{" "}
++          <strong className="font-medium text-zinc-800">
++            실시간으로 수만 명에게 안정적으로 동작하는 AI 시스템
++          </strong>
++          입니다. Graph-RAG 같은 비결정적 모듈을 결정적인 백엔드로 감싸고, 캐싱·인덱싱·관측
++          가능성을 더해 production-grade로 끌어올리는 일을 좋아합니다.
++        </p>
++        <p>
++          현재 <strong className="font-medium text-zinc-800">DACON</strong>에서 운영 / 기획 / QA
++          매니저로 근무 중입니다 (2026.04~). 2025년 여름에는{" "}
++          <strong className="font-medium text-zinc-800">자빅스</strong>에서 클라우드·엔터프라이즈
++          서비스 운영 인턴을 했고, 같은 해 한이음 드림업에서{" "}
++          <strong className="font-medium text-zinc-800">NerdMath</strong> 프로젝트를
++          진행했습니다.
++        </p>
++      </div>
++
++      <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5">
++        <dl className="grid grid-cols-[max-content_1fr] gap-x-8 gap-y-4 text-sm">
++          <dt className="text-zinc-400">학력</dt>
++          <dd className="text-zinc-800">
++            건국대학교 스마트ICT융합공학과 · 응용통계학과 다전공
++            <span className="ml-2 text-zinc-400 text-xs">2020.03 – 2026.02</span>
++          </dd>
++
++          <dt className="text-zinc-400">현재</dt>
++          <dd className="text-zinc-800">
++            DACON — 운영 / 기획 / QA 매니저
++            <span className="ml-2 text-zinc-400 text-xs">2026.04~</span>
++          </dd>
++
++          <dt className="text-zinc-400">위치</dt>
++          <dd className="text-zinc-800">Seoul, KR</dd>
++        </dl>
+       </div>
+     </section>
+   );
+diff --git a/components/Contact.tsx b/components/Contact.tsx
+index e4e1aee..d92105c 100644
+--- a/components/Contact.tsx
++++ b/components/Contact.tsx
+@@ -1,58 +1,51 @@
+ export default function Contact() {
+   return (
+-    <section
+-      id="contact"
+-      className="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-200"
+-    >
+-      <div className="text-sm font-mono text-blue-600 mb-3">## contact</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-8">
+-        연락하기
+-      </h2>
+-      <div className="bg-gradient-to-br from-zinc-900 to-zinc-700 text-white rounded-2xl p-10">
+-        <p className="text-zinc-300 mb-6 max-w-2xl">
+-          데이터 / AI / 백엔드 협업이나 프로젝트 제안, 채용 관련 문의 환영합니다.
+-        </p>
+-        <div className="flex flex-wrap gap-3">
+-          <a
+-            href="mailto:psyreo93@gmail.com"
+-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors font-medium"
+-          >
+-            ✉ psyreo93@gmail.com
+-          </a>
+-          <a
+-            href="mailto:psyreo@naver.com"
+-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 backdrop-blur text-white border border-white/20 rounded-lg transition-colors font-medium"
+-          >
+-            ✉ psyreo@naver.com
+-          </a>
+-          <a
+-            href="mailto:sy.park@dacon.io"
+-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 backdrop-blur text-white border border-white/20 rounded-lg transition-colors font-medium"
+-          >
+-            ✉ sy.park@dacon.io
+-            <span className="text-xs text-zinc-400 ml-1">(work)</span>
+-          </a>
+-          <a
+-            href="https://github.com/parksungyun0411"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur border border-white/20 rounded-lg transition-colors"
+-          >
+-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+-              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+-            </svg>
+-            github.com/parksungyun0411
+-          </a>
+-          <a
+-            href="https://velog.io/@parksungyun0411"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500/20 hover:bg-emerald-500/30 backdrop-blur border border-emerald-400/30 rounded-lg transition-colors"
+-          >
+-            <span className="font-bold text-base text-emerald-300">v</span>
+-            <span>velog.io/@parksungyun0411</span>
+-          </a>
+-        </div>
++    <section id="contact" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
++        07 — Contact
++      </p>
++      <h2 className="mb-6 text-2xl font-bold text-zinc-900">연락하기</h2>
++      <p className="text-zinc-600 leading-relaxed">
++        데이터 / AI / 백엔드 협업이나 프로젝트 제안, 채용 관련 문의 환영합니다.
++      </p>
++      <div className="flex flex-wrap gap-3 mt-8">
++        <a
++          href="mailto:psyreo93@gmail.com"
++          className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700"
++        >
++          ✉ psyreo93@gmail.com
++        </a>
++        <a
++          href="mailto:psyreo@naver.com"
++          className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-5 py-3 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
++        >
++          ✉ psyreo@naver.com
++        </a>
++        <a
++          href="mailto:sy.park@dacon.io"
++          className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-5 py-3 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
++        >
++          ✉ sy.park@dacon.io (work)
++        </a>
++        <a
++          href="https://github.com/parksungyun0411"
++          target="_blank"
++          rel="noopener noreferrer"
++          className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-5 py-3 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
++        >
++          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
++            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
++          </svg>
++          GitHub
++        </a>
++        <a
++          href="https://velog.io/@parksungyun0411"
++          target="_blank"
++          rel="noopener noreferrer"
++          className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-5 py-3 text-sm font-medium text-zinc-700 transition-colors hover:border-zinc-300 hover:bg-zinc-50"
++        >
++          Velog
++        </a>
+       </div>
+     </section>
+   );
+diff --git a/components/Credentials.tsx b/components/Credentials.tsx
+index 06811f6..e3960da 100644
+--- a/components/Credentials.tsx
++++ b/components/Credentials.tsx
+@@ -1,53 +1,55 @@
+ const certs = [
+-  "정보처리기사",
+-  "빅데이터분석기사",
+-  "SQLD",
+-  "ADsP",
+-  "컴활 1급",
+-  "한국사 1급",
++  { name: "정보처리기사", issuer: "한국산업인력공단", date: "2025.12" },
++  { name: "빅데이터분석기사", issuer: "한국데이터산업진흥원", date: "2025.12" },
++  { name: "ADsP", issuer: "한국데이터자격검정", date: "2025.06" },
++  { name: "SQLD", issuer: "한국데이터자격검정", date: "2024.09" },
++  { name: "컴퓨터활용능력 1급", issuer: "대한상공회의소", date: "2024.04" },
++  { name: "한국사능력검정시험 1급", issuer: "국사편찬위원회", date: "2023.08" },
+ ];
++
+ const languages = [
+   { name: "TOEIC", score: "885", date: "2024.08" },
+-  { name: "TOEIC Speaking", score: "IM3", date: "2026.03" },
++  { name: "TOEIC Speaking", score: "IM3 (130)", date: "2026.03" },
+ ];
+ 
+ export default function Credentials() {
+   return (
+-    <section className="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-200">
+-      <div className="text-sm font-mono text-blue-600 mb-3">## credentials</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-8">
+-        Credentials
+-      </h2>
++    <section id="credentials" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
++        06 — Credentials
++      </p>
++      <h2 className="mb-8 text-2xl font-bold text-zinc-900">Credentials</h2>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+-        <div className="bg-white border border-zinc-200 rounded-xl p-6">
+-          <h3 className="font-semibold mb-4 text-zinc-900 text-sm">자격증</h3>
+-          <div className="flex flex-wrap gap-2">
++        {/* 자격증 */}
++        <div className="rounded-xl border border-zinc-200 bg-white p-6">
++          <h3 className="mb-4 text-sm font-semibold text-zinc-900">자격증</h3>
++          <ul className="divide-y divide-zinc-100">
+             {certs.map((c) => (
+-              <span
+-                key={c}
+-                className="text-sm px-3 py-1.5 bg-blue-50 text-blue-700 rounded-md font-medium"
+-              >
+-                {c}
+-              </span>
++              <li key={c.name} className="flex items-baseline justify-between py-2.5">
++                <div>
++                  <span className="text-sm font-medium text-zinc-800">{c.name}</span>
++                  <span className="ml-2 text-xs text-zinc-400">{c.issuer}</span>
++                </div>
++                <span className="ml-4 shrink-0 font-mono text-xs text-zinc-500">{c.date}</span>
++              </li>
+             ))}
+-          </div>
++          </ul>
+         </div>
+-        <div className="bg-white border border-zinc-200 rounded-xl p-6">
+-          <h3 className="font-semibold mb-4 text-zinc-900 text-sm">어학</h3>
+-          <div className="space-y-2">
++
++        {/* 어학 */}
++        <div className="rounded-xl border border-zinc-200 bg-white p-6">
++          <h3 className="mb-4 text-sm font-semibold text-zinc-900">어학</h3>
++          <ul className="divide-y divide-zinc-100">
+             {languages.map((l) => (
+-              <div
+-                key={l.name}
+-                className="flex items-baseline justify-between text-sm"
+-              >
+-                <span className="text-zinc-700">{l.name}</span>
+-                <span>
++              <li key={l.name} className="flex items-baseline justify-between py-2.5">
++                <span className="text-sm font-medium text-zinc-800">{l.name}</span>
++                <span className="flex items-baseline gap-2">
+                   <span className="font-bold text-zinc-900">{l.score}</span>
+-                  <span className="text-xs text-zinc-500 ml-2">{l.date}</span>
++                  <span className="text-xs text-zinc-400">{l.date}</span>
+                 </span>
+-              </div>
++              </li>
+             ))}
+-          </div>
++          </ul>
+         </div>
+       </div>
+     </section>
+diff --git a/components/Experience.tsx b/components/Experience.tsx
+index 16b1937..df634d0 100644
+--- a/components/Experience.tsx
++++ b/components/Experience.tsx
+@@ -1,60 +1,95 @@
+-const experiences = [
++type ExperienceEntry = {
++  period: string;
++  role: string;
++  company: string;
++  bullets: string[];
++  tags: string[];
++  current: boolean;
++};
++
++const experiences: ExperienceEntry[] = [
+   {
+-    period: "2026.04 ~ 현재",
++    period: "2026.04 — 현재",
+     role: "운영 / 기획 / QA 매니저",
+     company: "DACON",
+     bullets: [
+       "데이터 사이언스 경진대회 플랫폼 운영, 신규 컴피티션·서비스 기획, QA 전반",
+     ],
++    tags: [],
+     current: true,
+   },
+   {
+-    period: "2025.05 ~ 2025.08",
++    period: "2025.05 — 2025.08",
+     role: "클라우드·엔터프라이즈 서비스 운영 인턴",
+     company: "자빅스 (Zabix) · 여름방학 인턴",
+     bullets: [
+-      "AWS · Azure 운영, EC2 / Microsoft 365 / IDMS 운영 지원",
+-      "공공 메신저 '온톡' (사용자 15만, 일 800만 건) 기획·운영 참여",
++      "AWS·Azure 운영, EC2 / Microsoft 365 / IDMS 운영 지원 및 고객사 사용량 기반 과금 산정",
++      "공공 메신저 '온톡' (사용자 15만, 일 800만 건) 서비스 기획·운영 참여",
+     ],
++    tags: ["AWS", "Azure", "Microsoft 365"],
++    current: false,
+   },
+ ];
+ 
+ export default function Experience() {
+   return (
+-    <section
+-      id="experience"
+-      className="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-200"
+-    >
+-      <div className="text-sm font-mono text-blue-600 mb-3">## experience</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-12">
+-        Experience
+-      </h2>
+-      <div className="relative pl-8 sm:pl-12 space-y-10 border-l-2 border-zinc-200">
+-        {experiences.map((e) => (
+-          <div key={`${e.period}-${e.company}`} className="relative">
+-            <div
+-              className={`absolute -left-[2.6rem] sm:-left-[3.6rem] top-1 w-4 h-4 rounded-full ${
+-                e.current ? "bg-blue-500 ring-4 ring-blue-100" : "bg-zinc-300"
+-              }`}
+-            />
+-            <div className="text-xs font-mono text-zinc-500 mb-1">
+-              {e.period}
+-              {e.current && (
+-                <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-700 rounded">
+-                  현재
++    <section id="experience" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
++        02 — Experience
++      </p>
++      <h2 className="mb-8 text-2xl font-bold text-zinc-900">Experience</h2>
++
++      <div className="flex flex-col gap-2">
++        {experiences.map((entry) => (
++          <div
++            key={`${entry.period}-${entry.company}`}
++            className="group rounded-lg p-4 transition-colors hover:bg-zinc-50"
++          >
++            <div className="sm:grid sm:grid-cols-[8rem_1fr] sm:gap-6">
++              {/* Date column */}
++              <div className="mb-2 shrink-0 sm:mb-0">
++                <span className="font-mono text-xs uppercase tracking-wide text-zinc-400">
++                  {entry.period}
+                 </span>
+-              )}
++                {entry.current && (
++                  <span className="ml-2 inline-block rounded-md bg-blue-50 px-1.5 py-0.5 text-xs font-mono text-blue-700 sm:ml-0 sm:mt-1.5 sm:block sm:w-fit">
++                    현재
++                  </span>
++                )}
++              </div>
++
++              {/* Content column */}
++              <div>
++                <h3 className="font-semibold text-zinc-900 transition-colors group-hover:text-blue-600">
++                  {entry.role}
++                </h3>
++                <p className="mb-3 text-sm text-zinc-500">{entry.company}</p>
++
++                {entry.bullets.length > 0 && (
++                  <ul className="mb-3 space-y-1">
++                    {entry.bullets.map((bullet, i) => (
++                      <li key={i} className="flex gap-2 text-sm text-zinc-600">
++                        <span className="mt-0.5 shrink-0 text-blue-500">·</span>
++                        <span>{bullet}</span>
++                      </li>
++                    ))}
++                  </ul>
++                )}
++
++                {entry.tags.length > 0 && (
++                  <div className="flex flex-wrap gap-1.5">
++                    {entry.tags.map((tag) => (
++                      <span
++                        key={tag}
++                        className="rounded-md bg-zinc-100 px-2 py-1 font-mono text-xs text-zinc-600"
++                      >
++                        {tag}
++                      </span>
++                    ))}
++                  </div>
++                )}
++              </div>
+             </div>
+-            <h3 className="text-lg font-bold text-zinc-900">{e.role}</h3>
+-            <div className="text-sm text-zinc-600 mb-3">{e.company}</div>
+-            <ul className="space-y-1 text-sm text-zinc-700">
+-              {e.bullets.map((b, i) => (
+-                <li key={i} className="flex gap-2">
+-                  <span className="text-blue-500 mt-1">·</span>
+-                  <span>{b}</span>
+-                </li>
+-              ))}
+-            </ul>
+           </div>
+         ))}
+       </div>
+diff --git a/components/FeaturedProject.tsx b/components/FeaturedProject.tsx
+index d8ecccc..68937c8 100644
+--- a/components/FeaturedProject.tsx
++++ b/components/FeaturedProject.tsx
+@@ -1,246 +1,175 @@
+ export default function FeaturedProject() {
+   return (
+-    <section
+-      id="featured"
+-      className="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-200"
+-    >
+-      <div className="text-sm font-mono text-blue-600 mb-3">## featured</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-12">
+-        Featured Projects
+-      </h2>
++    <section id="featured" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
++        03 — Featured Projects
++      </p>
++      <h2 className="mb-8 text-2xl font-bold text-zinc-900">Featured Projects</h2>
+ 
+-      {/* === NerdMath === */}
+-      <article className="bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white rounded-2xl p-8 sm:p-10 shadow-2xl mb-8">
+-        <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+-          <div>
+-            <div className="text-xs uppercase tracking-widest text-blue-200 mb-2">
+-              한이음 드림업 2025 · 팀: 수정두유좋아 · 외부 프로그램
++      <div className="space-y-6">
++        {/* === NerdMath === */}
++        <article className="rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-sm">
++          <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
++            <div>
++              <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
++                한이음 드림업 2025 · 팀: 수정두유좋아
++              </p>
++              <h3 className="text-xl font-bold text-zinc-900">NerdMath · 너드수학</h3>
++              <p className="text-zinc-500 mt-0.5">Graph-RAG + CLIL 기반 AI 수학 학습 플랫폼</p>
+             </div>
+-            <h3 className="text-3xl sm:text-4xl font-bold mb-2">
+-              NerdMath · 너드수학
+-            </h3>
+-            <p className="text-blue-100 text-base sm:text-lg">
+-              Graph-RAG + CLIL 기반 AI 수학 학습 플랫폼
+-            </p>
++            <span className="bg-zinc-100 text-zinc-500 text-xs rounded-full px-3 py-1 shrink-0">
++              🔒 Private (NDA)
++            </span>
+           </div>
+-          <span className="px-3 py-1 bg-white/20 backdrop-blur rounded-full text-xs">
+-            🔒 Private (NDA)
+-          </span>
+-        </div>
+ 
+-        <p className="text-blue-50 leading-relaxed mb-8 max-w-3xl">
+-          &quot;수포자 → Nerd(글로벌 수학 학습자)&quot; 정체성 전환을 목표로,
+-          학생의 진단 결과를 분석해{" "}
+-          <strong className="text-white">맞춤형 8주 학습 경로</strong>를 자동 생성하는 풀스택 플랫폼. 모노레포 통합·보안 강화·DB 마이그레이션·기능 구현 등 전반 리딩.
+-        </p>
++          <p className="text-sm text-zinc-600 leading-relaxed mb-6">
++            &apos;수포자 → Nerd(글로벌 수학 학습자)&apos; 정체성 전환을 목표로, 학생 진단 결과를 분석해{" "}
++            <strong className="font-medium text-zinc-800">맞춤형 8주 학습 경로</strong>를 자동 생성하는 풀스택 플랫폼.
++            모노레포 통합·보안 강화·DB 마이그레이션·기능 구현 전반 리딩.
++          </p>
+ 
+-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+-          <Stat
+-            n="3"
+-            label="대단원 80% 완료"
+-            sub="Nerd 모드 전환 조건"
+-            color="blue"
+-          />
+-          <Stat
+-            n="20문제"
+-            label="진단 테스트"
+-            sub="15분 / 25-40-35% 난이도 비율"
+-            color="blue"
+-          />
+-          <Stat
+-            n="< 50ms"
+-            label="개념 검색 응답"
+-            sub="Graph-RAG + LangChain"
+-            color="blue"
+-          />
+-        </div>
++          <div className="grid grid-cols-3 gap-3 mb-6">
++            <Stat n="대단원 80%×3" label="Nerd 모드 전환 조건" sub="" />
++            <Stat n="20문제 / 15분" label="진단 테스트 (25-40-35% 난이도)" sub="" />
++            <Stat n="&lt; 50ms" label="개념 검색 응답 (Graph-RAG)" sub="" />
++          </div>
+ 
+-        <div className="mb-8">
+-          <h4 className="font-semibold mb-3 text-white">기술 스택</h4>
+-          <div className="flex flex-wrap gap-2 text-xs">
+-            {[
+-              "Next.js 15 + React 19 + TypeScript",
+-              "FastAPI + LangChain + LangGraph",
+-              "Node.js / Express 5",
+-              "MongoDB Atlas (14 컬렉션)",
+-              "Neo4j AuraDB (90 nodes / 893 PRECEDES)",
+-              "PostgreSQL (Supabase)",
+-              "Upstash Redis",
+-              "Pinecone + Chroma",
+-              "Tailwind 4 · Zustand · TanStack Query · KaTeX",
+-            ].map((s) => (
+-              <span
+-                key={s}
+-                className="px-3 py-1 bg-white/15 backdrop-blur rounded-md"
+-              >
+-                {s}
+-              </span>
+-            ))}
++          <div className="mb-6">
++            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">기술 스택</p>
++            <div className="flex flex-wrap gap-1.5">
++              {[
++                "Next.js 15 + React 19 + TS",
++                "FastAPI + LangChain + LangGraph",
++                "Node.js / Express 5",
++                "MongoDB Atlas (14 컬렉션)",
++                "Neo4j AuraDB (90 nodes / 893 PRECEDES)",
++                "PostgreSQL (Supabase)",
++                "Upstash Redis",
++                "Pinecone + Chroma",
++                "Tailwind 4 · Zustand · TanStack Query · KaTeX",
++              ].map((s) => (
++                <span key={s} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
++                  {s}
++                </span>
++              ))}
++            </div>
+           </div>
+-        </div>
+ 
+-        <div>
+-          <h4 className="font-semibold mb-3 text-white">핵심 구현</h4>
+-          <ul className="space-y-2 text-sm text-blue-50">
+-            <li>
+-              <strong className="text-white">Graph-RAG 학습경로:</strong> Neo4j
+-              <code className="font-mono mx-1">PRECEDES</code>그래프 → 진단 오답
+-              + 개념 오답 기반 취약 개념 탐지 → RAG 백업으로 fallback, 8주 로드맵 자동 생성 (PDF FUNC-REQ-004 준수)
+-            </li>
+-            <li>
+-              <strong className="text-white">CLIL 단계 전환:</strong> 한국어
+-              Pre-Nerd → 영어 Nerd 모드 (조건: 대단원 80% × 3 ∧ 마라톤 10회 ∧ 레벨 20). 7대 미해결 난제 읽기 콘텐츠 포함
+-            </li>
+-            <li>
+-              <strong className="text-white">실 버그 fix:</strong> MongoDB 연결 실패 시 BE 프로세스 죽는 버그(<code className="font-mono">process.exit(1)</code>) 제거 + retry 무한 루프 방지. AI <code className="font-mono">langgraph_service.py</code> syntax 에러 발견·수정
+-            </li>
+-            <li>
+-              <strong className="text-white">모노레포 통합:</strong> 분리된
+-              AI/BE/FE repo를 git subtree로 히스토리 보존하며 단일 모노레포로 통합. 단일 .env source-of-truth + 심볼릭 링크
+-            </li>
+-            <li>
+-              <strong className="text-white">보안 강화:</strong> Helmet + CORS
+-              화이트리스트, AWS 키 로깅 제거, FastAPI URL 환경변수화, DEBUG 가드
+-            </li>
+-          </ul>
+-        </div>
++          <div className="mb-6">
++            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
++            <ul className="space-y-1.5 text-sm text-zinc-600">
++              {[
++                ["Graph-RAG 학습경로", "Neo4j PRECEDES 그래프 → 진단·개념 오답 기반 취약 개념 탐지 → RAG fallback, 8주 로드맵 자동 생성"],
++                ["CLIL 단계 전환", "한국어 Pre-Nerd → 영어 Nerd 모드 (대단원 80%×3 ∧ 마라톤 10회 ∧ 레벨 20)"],
++                ["실 버그 fix", "MongoDB 연결 실패 시 BE 프로세스 죽는 버그(process.exit(1)) 제거 + retry 무한 루프 방지"],
++                ["모노레포 통합", "분리된 AI/BE/FE repo를 git subtree로 히스토리 보존하며 단일 모노레포로 통합"],
++                ["보안 강화", "Helmet + CORS 화이트리스트, AWS 키 로깅 제거, FastAPI URL 환경변수화, DEBUG 가드"],
++              ].map(([lead, body]) => (
++                <li key={lead} className="flex gap-2">
++                  <span className="text-blue-500 shrink-0">·</span>
++                  <span><strong className="font-medium text-zinc-800">{lead}:</strong> {body}</span>
++                </li>
++              ))}
++            </ul>
++          </div>
+ 
+-        <div className="mt-8 pt-6 border-t border-white/20 text-sm text-blue-200">
+-          <strong className="text-white">상태:</strong> 18개 라우트 prerender 빌드 통과 · BE/AI/FE 3개 서버 동시 기동 검증 · 마라톤·돌발 챌린지·Nerd 모드 풀스택 동작 확인.
+-        </div>
+-      </article>
++          <p className="text-xs text-zinc-400">
++            18개 라우트 prerender 빌드 통과 · BE/AI/FE 3개 서버 동시 기동 검증 · 풀스택 동작 확인
++          </p>
++        </article>
+ 
+-      {/* === jeju-emotion-analysis === */}
+-      <article className="bg-gradient-to-br from-rose-600 via-pink-600 to-fuchsia-700 text-white rounded-2xl p-8 sm:p-10 shadow-2xl">
+-        <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+-          <div>
+-            <div className="text-xs uppercase tracking-widest text-rose-200 mb-2">
+-              건국대학교 스마트ICT융합공학과 · 2025 가을학기
++        {/* === 제주어 다중감정분류 === */}
++        <article className="rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-sm">
++          <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
++            <div>
++              <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
++                건국대학교 스마트ICT융합공학과 · 2025 가을학기 · 졸업 프로젝트
++              </p>
++              <h3 className="text-xl font-bold text-zinc-900">제주어 다중감정분류</h3>
++              <p className="text-zinc-500 mt-0.5">GPT-4o 라벨링 + 고전 ML로 푸는 저자원 방언 감정 분류</p>
+             </div>
+-            <h3 className="text-3xl sm:text-4xl font-bold mb-2">
+-              제주어 다중감정분류
+-            </h3>
+-            <p className="text-rose-100 text-base sm:text-lg">
+-              GPT-4o 라벨링 + 고전 ML로 푸는 저자원 방언 감정 분류
+-            </p>
++            <a
++              href="https://github.com/parksungyun0411/jeju-emotion-analysis"
++              target="_blank"
++              rel="noopener noreferrer"
++              className="bg-zinc-100 text-blue-600 text-xs rounded-full px-3 py-1 shrink-0 hover:underline"
++            >
++              🎓 GitHub →
++            </a>
+           </div>
+-          <a
+-            href="https://github.com/parksungyun0411/jeju-emotion-analysis"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            className="px-3 py-1 bg-white/20 backdrop-blur rounded-full text-xs hover:bg-white/30 transition-colors"
+-          >
+-            🎓 졸업 프로젝트 →
+-          </a>
+-        </div>
+ 
+-        <p className="text-rose-50 leading-relaxed mb-8 max-w-3xl">
+-          AI Hub 제주어/표준어 병렬 데이터에 <strong className="text-white">GPT-4o로 7가지 감정 자동 라벨링</strong>을 적용하고, TF-IDF + N-gram 특성을 4개 고전 ML 분류기(LR/SVM/RF/NB)로 비교해 저자원 방언 텍스트의 감정 분류 모델을 구축. <strong className="text-white">KoELECTRA 베이스라인 대비 데이터 정제 기준 재설계</strong>로 성능 개선.
+-        </p>
++          <p className="text-sm text-zinc-600 leading-relaxed mb-6">
++            AI Hub 제주어/표준어 병렬 데이터에{" "}
++            <strong className="font-medium text-zinc-800">GPT-4o로 7가지 감정 자동 라벨링</strong>을 적용하고,
++            TF-IDF + N-gram 특성을 4개 고전 ML 분류기(LR/SVM/RF/NB)로 비교해 저자원 방언 텍스트 감정 분류 모델 구축.{" "}
++            <strong className="font-medium text-zinc-800">KoELECTRA 베이스라인 대비 데이터 정제 기준 재설계</strong>로 성능 개선.
++          </p>
+ 
+-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+-          <Stat
+-            n="4,600+"
+-            label="학습 샘플"
+-            sub="AI Hub 제주어 + 단발성 대화"
+-            color="rose"
+-          />
+-          <Stat
+-            n="7개"
+-            label="감정 라벨"
+-            sub="중립·기쁨·슬픔·분노·놀람·공포·혐오"
+-            color="rose"
+-          />
+-          <Stat
+-            n="4개 분류기"
+-            label="비교 실험"
+-            sub="LR / SVM / RF / NB · F1-Weighted"
+-            color="rose"
+-          />
+-        </div>
++          <div className="grid grid-cols-3 gap-3 mb-6">
++            <Stat n="4,600+" label="학습 샘플 (AI Hub 제주어)" sub="" />
++            <Stat n="7개" label="감정 라벨 (중립·기쁨·슬픔·분노·놀람·공포·혐오)" sub="" />
++            <Stat n="4개 분류기" label="LR / SVM / RF / NB · F1-Weighted" sub="" />
++          </div>
+ 
+-        <div className="mb-8">
+-          <h4 className="font-semibold mb-3 text-white">기술 스택</h4>
+-          <div className="flex flex-wrap gap-2 text-xs">
+-            {[
+-              "Python 3",
+-              "scikit-learn (TF-IDF · LR · SVM · RF · NB)",
+-              "OpenAI API (GPT-4o)",
+-              "pandas · numpy",
+-              "seaborn · matplotlib",
+-              "openpyxl",
+-            ].map((s) => (
+-              <span
+-                key={s}
+-                className="px-3 py-1 bg-white/15 backdrop-blur rounded-md"
+-              >
+-                {s}
+-              </span>
+-            ))}
++          <div className="mb-6">
++            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">기술 스택</p>
++            <div className="flex flex-wrap gap-1.5">
++              {[
++                "Python 3",
++                "scikit-learn (TF-IDF·LR·SVM·RF·NB)",
++                "OpenAI API (GPT-4o)",
++                "pandas · numpy",
++                "seaborn · matplotlib",
++                "openpyxl",
++              ].map((s) => (
++                <span key={s} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
++                  {s}
++                </span>
++              ))}
++            </div>
+           </div>
+-        </div>
+ 
+-        <div>
+-          <h4 className="font-semibold mb-3 text-white">핵심 구현</h4>
+-          <ul className="space-y-2 text-sm text-rose-50">
+-            <li>
+-              <strong className="text-white">GPT-4o 자동 라벨링 파이프라인:</strong>
+-              <code className="font-mono mx-1">automation.py</code>로 OpenAI API 호출 → 7-class 라벨링 + 수동 검증. 비용·시간 효율 라벨링 자동화
+-            </li>
+-            <li>
+-              <strong className="text-white">실험 설계:</strong> 제주어 단독
+-              모델 / 표준어 베이스라인 / 통합 데이터 베이스라인 3-way 비교. F1-Weighted + 감정별 상세 성능 분석
+-            </li>
+-            <li>
+-              <strong className="text-white">다중 문장 처리:</strong> 간단/완전
+-              두 버전(<code className="font-mono">multi_sentence_handler*.py</code>)으로 입력 단위 변화 효과 검증
+-            </li>
+-            <li>
+-              <strong className="text-white">TF-IDF 깊이 분석:</strong> 단어 /
+-              2-gram / 3-gram 변화에 따른 가중치 분포·F1 영향 별도 문서화 (<code className="font-mono">docs/f1_weighted_analysis.txt</code>, <code className="font-mono">tfidf_explanation.txt</code>)
+-            </li>
+-            <li>
+-              <strong className="text-white">KoELECTRA 베이스라인 대비:</strong>
+-              transformer 베이스라인 결과를 그대로 따르지 않고, 저자원 환경에서 데이터 정제 기준을 재설계해 고전 ML 분류기로 더 안정적인 성능 확보
+-            </li>
+-          </ul>
+-        </div>
++          <div className="mb-6">
++            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
++            <ul className="space-y-1.5 text-sm text-zinc-600">
++              {[
++                ["GPT-4o 자동 라벨링 파이프라인", "automation.py로 OpenAI API 호출 → 7-class 라벨링 + 수동 검증"],
++                ["실험 설계", "제주어 단독 / 표준어 / 통합 데이터 3-way 비교, F1-Weighted + 감정별 상세 분석"],
++                ["다중 문장 처리", "간단/완전 두 버전으로 입력 단위 변화 효과 검증"],
++                ["TF-IDF 깊이 분석", "단어/2-gram/3-gram 가중치 분포·F1 영향 문서화"],
++                ["KoELECTRA 베이스라인 대비", "저자원 환경에서 데이터 정제 기준 재설계로 고전 ML로 더 안정적 성능 확보"],
++              ].map(([lead, body]) => (
++                <li key={lead} className="flex gap-2">
++                  <span className="text-blue-500 shrink-0">·</span>
++                  <span><strong className="font-medium text-zinc-800">{lead}:</strong> {body}</span>
++                </li>
++              ))}
++            </ul>
++          </div>
+ 
+-        <div className="mt-8 pt-6 border-t border-white/20 text-sm text-rose-200">
+-          <strong className="text-white">산출물:</strong> README + 4개 문서(실험 설계 / 모델 명세 / F1 분석 / TF-IDF 설명) +{" "}
+-          <code className="font-mono text-rose-100">results/</code> 폴더(베이스라인 비교 4종) ·{" "}
+-          <a
+-            href="https://github.com/parksungyun0411/jeju-emotion-analysis"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            className="underline hover:text-white"
+-          >
+-            GitHub →
+-          </a>
+-        </div>
+-      </article>
++          <p className="text-xs text-zinc-400">
++            GitHub →{" "}
++            <a
++              href="https://github.com/parksungyun0411/jeju-emotion-analysis"
++              target="_blank"
++              rel="noopener noreferrer"
++              className="text-blue-600 hover:underline"
++            >
++              https://github.com/parksungyun0411/jeju-emotion-analysis
++            </a>
++          </p>
++        </article>
++      </div>
+     </section>
+   );
+ }
+ 
+-function Stat({
+-  n,
+-  label,
+-  sub,
+-  color = "blue",
+-}: {
+-  n: string;
+-  label: string;
+-  sub: string;
+-  color?: "blue" | "rose";
+-}) {
+-  const labelColor = color === "rose" ? "text-rose-100" : "text-blue-100";
+-  const subColor = color === "rose" ? "text-rose-300" : "text-blue-300";
++function Stat({ n, label, sub }: { n: string; label: string; sub: string }) {
+   return (
+-    <div className="bg-white/10 backdrop-blur rounded-xl p-4 border border-white/10">
+-      <div className="text-3xl font-bold mb-1">{n}</div>
+-      <div className={`text-sm ${labelColor}`}>{label}</div>
+-      <div className={`text-xs ${subColor} mt-1`}>{sub}</div>
++    <div className="rounded-lg border border-zinc-200 bg-zinc-50/50 p-3">
++      <div className="text-2xl font-bold text-blue-600">{n}</div>
++      <div className="text-xs text-zinc-500 mt-0.5">{label}</div>
++      {sub && <div className="text-[11px] text-zinc-400 mt-0.5">{sub}</div>}
+     </div>
+   );
+ }
+diff --git a/components/Hero.tsx b/components/Hero.tsx
+deleted file mode 100644
+index 0c23099..0000000
+--- a/components/Hero.tsx
++++ /dev/null
+@@ -1,77 +0,0 @@
+-export default function Hero() {
+-  return (
+-    <section
+-      id="top"
+-      className="relative overflow-hidden bg-gradient-to-br from-zinc-50 via-white to-blue-50"
+-    >
+-      <div className="max-w-5xl mx-auto px-6 py-24 sm:py-32">
+-        <div className="text-sm font-mono text-blue-600 mb-3">
+-          $ whoami
+-        </div>
+-        <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-zinc-900 mb-4">
+-          박성윤
+-          <span className="block text-2xl sm:text-3xl text-zinc-500 mt-2 font-normal">
+-            Park Sung Yun
+-          </span>
+-        </h1>
+-        <p className="text-xl sm:text-2xl text-zinc-700 mb-8 max-w-3xl leading-relaxed">
+-          데이터 / AI 기반으로 사용자의{" "}
+-          <strong className="text-zinc-900">본질적인 문제</strong>를 해결하는
+-          <br />
+-          <strong className="text-zinc-900">백엔드 엔지니어</strong>
+-        </p>
+-        <div className="flex flex-wrap gap-3 mb-10">
+-          <a
+-            href="https://github.com/parksungyun0411"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white rounded-lg hover:bg-zinc-700 transition-colors text-sm font-medium"
+-          >
+-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+-              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+-            </svg>
+-            GitHub
+-          </a>
+-          <a
+-            href="https://velog.io/@parksungyun0411"
+-            target="_blank"
+-            rel="noopener noreferrer"
+-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-sm font-medium"
+-          >
+-            <span className="font-bold text-base">v</span> Velog
+-          </a>
+-          <a
+-            href="mailto:psyreo93@gmail.com"
+-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+-          >
+-            ✉ Email
+-          </a>
+-          <a
+-            href="#contact"
+-            className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-300 text-zinc-700 rounded-lg hover:bg-zinc-100 transition-colors text-sm font-medium"
+-          >
+-            연락하기 →
+-          </a>
+-        </div>
+-        <div className="flex flex-wrap gap-2 text-xs">
+-          {[
+-            "FastAPI",
+-            "LangChain / LangGraph",
+-            "Next.js",
+-            "Node.js",
+-            "MongoDB / Neo4j",
+-            "AWS / Azure",
+-            "Python · Java · TypeScript",
+-          ].map((t) => (
+-            <span
+-              key={t}
+-              className="px-3 py-1 bg-white border border-zinc-200 rounded-full text-zinc-600"
+-            >
+-              {t}
+-            </span>
+-          ))}
+-        </div>
+-      </div>
+-    </section>
+-  );
+-}
+diff --git a/components/Nav.tsx b/components/Nav.tsx
+deleted file mode 100644
+index bf410de..0000000
+--- a/components/Nav.tsx
++++ /dev/null
+@@ -1,31 +0,0 @@
+-export default function Nav() {
+-  const items = [
+-    { id: "about", label: "About" },
+-    { id: "featured", label: "Featured" },
+-    { id: "projects", label: "Projects" },
+-    { id: "skills", label: "Skills" },
+-    { id: "experience", label: "Experience" },
+-    { id: "contact", label: "Contact" },
+-  ];
+-  return (
+-    <nav className="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-zinc-200">
+-      <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+-        <a href="#top" className="font-bold text-zinc-900">
+-          박성윤
+-        </a>
+-        <ul className="hidden sm:flex gap-6 text-sm text-zinc-600">
+-          {items.map((i) => (
+-            <li key={i.id}>
+-              <a
+-                href={`#${i.id}`}
+-                className="hover:text-zinc-900 transition-colors"
+-              >
+-                {i.label}
+-              </a>
+-            </li>
+-          ))}
+-        </ul>
+-      </div>
+-    </nav>
+-  );
+-}
+diff --git a/components/Projects.tsx b/components/Projects.tsx
+index 828f335..094aa23 100644
+--- a/components/Projects.tsx
++++ b/components/Projects.tsx
+@@ -2,38 +2,30 @@ const projects = [
+   {
+     name: "liar-game",
+     title: "Liar Game",
+-    subtitle: "네트워크 프로그래밍 팀 프로젝트 · 3-1",
++    subtitle: "네트워크 프로그래밍 팀 프로젝트 · 3-1 · 3인",
+     description:
+       "Java Swing + raw TCP 소켓으로 구현한 8인 멀티플레이어 라이어 게임. 서버 멀티스레드 처리 + GameManager 라운드 로직 전담. 181개 주제 풀, 투표·발언 순서·결과 판정 직접 설계.",
+     tags: ["Java", "Swing", "TCP Socket", "Multi-Thread", "Gradle"],
+     url: "https://github.com/parksungyun0411/liar-game",
+-    badge: "🎮 팀 프로젝트 (3인)",
+-    color: "from-emerald-500 to-teal-600",
+-    star: true,
+   },
+   {
+     name: "university-coursework",
+     title: "학부 4년 코드 모음",
+     subtitle: "건국대 스마트ICT융합공학과 · 2020 ~ 2025",
+     description:
+-      "학기별 과제·실습 코드. C 자료구조 직접 구현, C++ B+Tree/Slotted Page (DBMS 내부), Java 알고리즘(Prim/Dijkstra/Cut Vertex), R 회귀분석·비모수통계·다변량분석, Python 통계전산처리.",
++      "학기별 과제·실습 코드. C 자료구조 직접 구현, C++ B+Tree/Slotted Page(DBMS 내부), Java 알고리즘(Prim/Dijkstra/Cut Vertex), R 회귀·비모수·다변량분석, Python 통계전산처리.",
+     tags: ["C", "C++", "Java", "Python", "R"],
+     url: "https://github.com/parksungyun0411/university-coursework",
+-    badge: "📚 학부 학습 기록",
+-    color: "from-amber-500 to-orange-600",
+   },
+ ];
+ 
+ export default function Projects() {
+   return (
+-    <section
+-      id="projects"
+-      className="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-200"
+-    >
+-      <div className="text-sm font-mono text-blue-600 mb-3">## projects</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-12">
+-        Other Projects
+-      </h2>
++    <section id="projects" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
++        04 — Other Projects
++      </p>
++      <h2 className="mb-8 text-2xl font-bold text-zinc-900">Other Projects</h2>
+       <div className="space-y-4">
+         {projects.map((p) => (
+           <a
+@@ -41,58 +33,46 @@ export default function Projects() {
+             href={p.url}
+             target="_blank"
+             rel="noopener noreferrer"
+-            className="group block bg-white border border-zinc-200 rounded-xl p-6 hover:border-zinc-400 hover:shadow-lg transition-all"
++            className="group block rounded-xl border border-zinc-200 bg-white p-5 transition-all hover:border-zinc-300 hover:shadow-sm"
+           >
+             <div className="flex items-start gap-4">
+-              <div
+-                className={`shrink-0 w-12 h-12 bg-gradient-to-br ${p.color} rounded-lg flex items-center justify-center text-white text-xs font-mono`}
+-              >
++              <div className="shrink-0 w-11 h-11 rounded-lg bg-zinc-100 text-zinc-500 font-mono text-xs flex items-center justify-center">
+                 {p.name.slice(0, 2).toUpperCase()}
+               </div>
+               <div className="flex-1 min-w-0">
+-                <div className="flex items-center gap-2 mb-1 flex-wrap">
+-                  <h3 className="font-bold text-lg text-zinc-900 group-hover:text-blue-600 transition-colors">
++                <div className="flex items-center justify-between gap-2 mb-0.5">
++                  <h3 className="font-bold text-zinc-900 group-hover:text-blue-600 transition-colors">
+                     {p.title}
+                   </h3>
+-                  <span className="text-xs text-zinc-400">·</span>
+-                  <code className="text-xs text-zinc-500 font-mono">
+-                    {p.name}
+-                  </code>
+-                  {p.star && (
+-                    <span className="text-xs">⭐</span>
+-                  )}
++                  <svg
++                    className="shrink-0 w-4 h-4 text-zinc-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
++                    fill="none"
++                    stroke="currentColor"
++                    viewBox="0 0 24 24"
++                  >
++                    <path
++                      strokeLinecap="round"
++                      strokeLinejoin="round"
++                      strokeWidth={2}
++                      d="M14 5l7 7m0 0l-7 7m7-7H3"
++                    />
++                  </svg>
+                 </div>
+-                <div className="text-xs text-zinc-500 mb-2">{p.subtitle}</div>
+-                <p className="text-sm text-zinc-700 mb-3 leading-relaxed">
++                <p className="text-xs text-zinc-400 mb-2">{p.subtitle}</p>
++                <p className="text-sm text-zinc-600 leading-relaxed mb-3">
+                   {p.description}
+                 </p>
+-                <div className="flex flex-wrap gap-1.5 items-center">
+-                  <span className="text-xs px-2 py-0.5 bg-zinc-100 text-zinc-700 rounded">
+-                    {p.badge}
+-                  </span>
++                <div className="flex flex-wrap gap-1.5">
+                   {p.tags.map((t) => (
+                     <span
+                       key={t}
+-                      className="text-xs px-2 py-0.5 bg-zinc-50 border border-zinc-200 text-zinc-600 rounded font-mono"
++                      className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-600 font-mono"
+                     >
+                       {t}
+                     </span>
+                   ))}
+                 </div>
+               </div>
+-              <svg
+-                className="shrink-0 w-5 h-5 text-zinc-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all"
+-                fill="none"
+-                stroke="currentColor"
+-                viewBox="0 0 24 24"
+-              >
+-                <path
+-                  strokeLinecap="round"
+-                  strokeLinejoin="round"
+-                  strokeWidth={2}
+-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+-                />
+-              </svg>
+             </div>
+           </a>
+         ))}
+diff --git a/components/Sidebar.tsx b/components/Sidebar.tsx
+new file mode 100644
+index 0000000..17e37f4
+--- /dev/null
++++ b/components/Sidebar.tsx
+@@ -0,0 +1,110 @@
++"use client";
++
++import { useEffect, useState } from "react";
++
++const NAV = [
++  { id: "about", label: "About" },
++  { id: "experience", label: "Experience" },
++  { id: "featured", label: "Featured" },
++  { id: "projects", label: "Projects" },
++  { id: "skills", label: "Skills" },
++  { id: "credentials", label: "Credentials" },
++  { id: "contact", label: "Contact" },
++];
++
++export default function Sidebar() {
++  const [active, setActive] = useState("about");
++
++  useEffect(() => {
++    const observer = new IntersectionObserver(
++      (entries) => {
++        entries.forEach((entry) => {
++          if (entry.isIntersecting) setActive(entry.target.id);
++        });
++      },
++      { rootMargin: "-40% 0px -55% 0px" }
++    );
++    NAV.forEach(({ id }) => {
++      const el = document.getElementById(id);
++      if (el) observer.observe(el);
++    });
++    return () => observer.disconnect();
++  }, []);
++
++  return (
++    <header className="lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-5/12 lg:flex-col lg:justify-between lg:py-28 pt-16">
++      <div>
++        <h1 className="text-4xl font-bold tracking-tight text-zinc-900 sm:text-5xl">
++          박성윤
++        </h1>
++        <p className="mt-2 text-lg font-medium text-zinc-500">Park Sung Yun</p>
++        <p className="mt-4 text-base font-semibold text-zinc-800">
++          Data / AI Backend Engineer
++        </p>
++        <p className="mt-3 max-w-xs leading-relaxed text-zinc-500">
++          데이터·통계 기반으로 사용자의 본질적인 문제를 해결하는 백엔드 엔지니어.
++        </p>
++
++        {/* 데스크톱 전용 섹션 네비게이션 */}
++        <nav className="mt-12 hidden lg:block" aria-label="섹션 네비게이션">
++          <ul className="space-y-3 text-sm">
++            {NAV.map(({ id, label }) => {
++              const isActive = active === id;
++              return (
++                <li key={id}>
++                  <a
++                    href={`#${id}`}
++                    className="group flex items-center gap-3"
++                    aria-current={isActive ? "true" : undefined}
++                  >
++                    <span
++                      className={`h-px transition-all ${
++                        isActive
++                          ? "w-12 bg-blue-600"
++                          : "w-6 bg-zinc-300 group-hover:w-12 group-hover:bg-zinc-500"
++                      }`}
++                    />
++                    <span
++                      className={`font-mono uppercase tracking-widest transition-colors ${
++                        isActive
++                          ? "text-blue-600"
++                          : "text-zinc-400 group-hover:text-zinc-700"
++                      }`}
++                    >
++                      {label}
++                    </span>
++                  </a>
++                </li>
++              );
++            })}
++          </ul>
++        </nav>
++      </div>
++
++      <div className="mt-10 flex flex-wrap gap-4 text-sm lg:mt-0">
++        <a
++          href="https://github.com/parksungyun0411"
++          target="_blank"
++          rel="noopener noreferrer"
++          className="text-zinc-500 transition-colors hover:text-blue-600"
++        >
++          GitHub
++        </a>
++        <a
++          href="https://velog.io/@parksungyun0411"
++          target="_blank"
++          rel="noopener noreferrer"
++          className="text-zinc-500 transition-colors hover:text-blue-600"
++        >
++          Velog
++        </a>
++        <a
++          href="mailto:psyreo93@gmail.com"
++          className="text-zinc-500 transition-colors hover:text-blue-600"
++        >
++          Email
++        </a>
++      </div>
++    </header>
++  );
++}
+diff --git a/components/Skills.tsx b/components/Skills.tsx
+index 7edfa73..c1d12bd 100644
+--- a/components/Skills.tsx
++++ b/components/Skills.tsx
+@@ -1,89 +1,25 @@
+ const skillGroups = [
+-  {
+-    title: "Languages",
+-    items: ["Python", "Java", "C / C++", "R", "SQL", "TypeScript", "JavaScript"],
+-  },
+-  {
+-    title: "Backend / AI",
+-    items: [
+-      "FastAPI",
+-      "Node.js / Express",
+-      "LangChain",
+-      "LangGraph",
+-      "OpenAI API",
+-      "scikit-learn",
+-      "KoELECTRA",
+-    ],
+-  },
+-  {
+-    title: "Frontend",
+-    items: [
+-      "Next.js 15",
+-      "React 19",
+-      "Tailwind CSS",
+-      "Zustand",
+-      "TanStack Query",
+-      "KaTeX",
+-    ],
+-  },
+-  {
+-    title: "Data Stores",
+-    items: [
+-      "MongoDB",
+-      "PostgreSQL",
+-      "Neo4j",
+-      "Redis",
+-      "Pinecone / Chroma",
+-      "pandas / numpy",
+-    ],
+-  },
+-  {
+-    title: "Infra / DevOps",
+-    items: [
+-      "AWS (EC2 · S3 · SES)",
+-      "Azure",
+-      "Docker",
+-      "GitHub Actions",
+-      "Linux",
+-      "Nginx",
+-    ],
+-  },
+-  {
+-    title: "Statistics",
+-    items: [
+-      "회귀 분석",
+-      "비모수 통계",
+-      "다변량 분석 (PCA · 인자 · 군집 · 판별)",
+-      "분류 / 클러스터링",
+-    ],
+-  },
++  { title: "Languages", items: ["Python", "Java", "C / C++", "R", "SQL", "TypeScript", "JavaScript"] },
++  { title: "Backend / AI", items: ["FastAPI", "Node.js / Express", "LangChain", "LangGraph", "OpenAI API", "scikit-learn", "KoELECTRA"] },
++  { title: "Frontend", items: ["Next.js 15", "React 19", "Tailwind CSS", "Zustand", "TanStack Query", "KaTeX"] },
++  { title: "Data Stores", items: ["MongoDB", "PostgreSQL", "Neo4j", "Redis", "Pinecone / Chroma", "pandas / numpy"] },
++  { title: "Infra / DevOps", items: ["AWS (EC2·S3·SES)", "Azure", "Docker", "GitHub Actions", "Linux", "Nginx"] },
++  { title: "Statistics", items: ["회귀 분석", "비모수 통계", "다변량 분석 (PCA·인자·군집·판별)", "분류 / 클러스터링"] },
+ ];
+ 
+ export default function Skills() {
+   return (
+-    <section
+-      id="skills"
+-      className="max-w-5xl mx-auto px-6 py-20 border-t border-zinc-200"
+-    >
+-      <div className="text-sm font-mono text-blue-600 mb-3">## skills</div>
+-      <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-12">
+-        Tech Stack
+-      </h2>
+-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+-        {skillGroups.map((g) => (
+-          <div
+-            key={g.title}
+-            className="bg-white border border-zinc-200 rounded-xl p-5"
+-          >
+-            <h3 className="font-semibold text-zinc-900 mb-3 text-sm">
+-              {g.title}
+-            </h3>
+-            <div className="flex flex-wrap gap-1.5">
+-              {g.items.map((item) => (
+-                <span
+-                  key={item}
+-                  className="text-xs px-2 py-1 bg-zinc-100 text-zinc-700 rounded font-mono"
+-                >
++    <section id="skills" className="scroll-mt-24">
++      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">05 — Tech Stack</p>
++      <h2 className="mb-8 text-2xl font-bold text-zinc-900">Tech Stack</h2>
++
++      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
++        {skillGroups.map((group) => (
++          <div key={group.title} className="rounded-xl border border-zinc-200 bg-white p-5">
++            <p className="text-sm font-semibold text-zinc-900 mb-3">{group.title}</p>
++            <div className="flex flex-wrap gap-2">
++              {group.items.map((item) => (
++                <span key={item} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
+                   {item}
+                 </span>
+               ))}
