@@ -15,7 +15,7 @@ export default function FeaturedProject() {
                 한이음 드림업 2025 · 팀: 수정두유좋아
               </p>
               <h3 className="text-xl font-bold text-zinc-900">NerdMath · 너드수학</h3>
-              <p className="text-zinc-500 mt-0.5">Graph-RAG + CLIL 기반 AI 수학 학습 플랫폼</p>
+              <p className="text-zinc-500 mt-0.5">학생마다 다른 학습 경로를 짜주는 AI 수학 학습 플랫폼</p>
             </div>
             <span className="bg-zinc-100 text-zinc-500 text-xs rounded-full px-3 py-1 shrink-0">
               🔒 Private (NDA)
@@ -23,30 +23,30 @@ export default function FeaturedProject() {
           </div>
 
           <p className="text-sm text-zinc-600 leading-relaxed mb-6">
-            &apos;수포자 → Nerd(글로벌 수학 학습자)&apos; 정체성 전환을 목표로, 학생 진단 결과를 분석해{" "}
-            <strong className="font-medium text-zinc-800">맞춤형 8주 학습 경로</strong>를 자동 생성하는 풀스택 플랫폼.
-            모노레포 통합·보안 강화·DB 마이그레이션·기능 구현 전반 리딩.
+            수학을 포기한 학생도 다시 붙들 수 있도록, 진단 결과를 분석해 학생마다 다른{" "}
+            <strong className="font-medium text-zinc-800">학습 경로를 자동으로 짜주는</strong> AI 수학 학습 플랫폼.
+            진단 추천 알고리즘과 AI 챗봇 같은 AI 기능부터 보안·안정성·배포 구조까지, 백엔드 전반을 맡았습니다.
           </p>
 
           <div className="grid grid-cols-3 gap-3 mb-6">
             <Stat n="대단원 80%×3" label="Nerd 모드 전환 조건" sub="" />
-            <Stat n="20문제 / 15분" label="진단 테스트 (25-40-35% 난이도)" sub="" />
-            <Stat n="&lt; 50ms" label="개념 검색 응답 (Graph-RAG)" sub="" />
+            <Stat n="20문제 / 15분" label="진단 테스트" sub="" />
+            <Stat n="&lt; 50ms" label="개념 검색 응답 속도" sub="" />
           </div>
 
           <div className="mb-6">
             <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">기술 스택</p>
             <div className="flex flex-wrap gap-1.5">
               {[
-                "Next.js 15 + React 19 + TS",
-                "FastAPI + LangChain + LangGraph",
-                "Node.js / Express 5",
-                "MongoDB Atlas (14 컬렉션)",
-                "Neo4j AuraDB (90 nodes / 893 PRECEDES)",
-                "PostgreSQL (Supabase)",
-                "Upstash Redis",
-                "Pinecone + Chroma",
-                "Tailwind 4 · Zustand · TanStack Query · KaTeX",
+                "Next.js · React · TypeScript",
+                "FastAPI · LangChain",
+                "Node.js · Express",
+                "MongoDB",
+                "Neo4j",
+                "PostgreSQL",
+                "Redis",
+                "Pinecone · Chroma",
+                "Tailwind · Zustand · TanStack Query",
               ].map((s) => (
                 <span key={s} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
                   {s}
@@ -59,11 +59,12 @@ export default function FeaturedProject() {
             <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
             <ul className="space-y-1.5 text-sm text-zinc-600">
               {[
-                ["Graph-RAG 학습경로", "Neo4j 개념 선후관계 그래프로 진단·오답 기반 취약 개념을 찾고, 부족한 부분은 검색(RAG)으로 보완해 8주 로드맵 자동 생성"],
-                ["CLIL 단계 전환", "한국어 Pre-Nerd → 영어 Nerd 모드 (대단원 80%×3 ∧ 마라톤 10회 ∧ 레벨 20)"],
-                ["실 버그 fix", "MongoDB 연결 실패 시 BE 프로세스 죽는 버그(process.exit(1)) 제거 + retry 무한 루프 방지"],
-                ["모노레포 통합", "분리된 AI/BE/FE repo를 git subtree로 히스토리 보존하며 단일 모노레포로 통합"],
-                ["보안 강화", "Helmet + CORS 화이트리스트, AWS 키 로깅 제거, FastAPI URL 환경변수화, DEBUG 가드"],
+                ["학생 맞춤 학습 경로", "진단으로 학생이 막힌 부분을 찾고, 개념의 선후 관계를 따라 부족한 곳부터 채우는 맞춤 학습 경로를 자동으로 생성"],
+                ["AI 챗봇·풀이 도우미", "학생 질문을 '문제 풀이 / 개념 설명 / 일반 질문'으로 자동 분류해, 맥락에 맞는 답을 실시간으로 이어서 보여주는 챗봇 구현"],
+                ["문제 자동 디지털화", "종이·이미지 속 문항을 OCR로 수식까지 인식해, 사람이 일일이 옮기지 않아도 구조화된 데이터로 자동 변환·저장"],
+                ["서버가 죽던 버그 해결", "DB 연결이 한 번 실패하면 백엔드 전체가 멈추던 문제를, 타임아웃·예외 처리로 고쳐 일시적 장애에도 서비스가 계속 동작하도록 개선"],
+                ["흩어진 코드 통합", "AI·백엔드·프론트엔드로 따로 관리되던 3개 저장소를, 작업 이력을 보존하며 하나로 합쳐 협업·배포를 단순화"],
+                ["보안 강화", "외부 접근을 허용된 주소로만 제한하고 보안 헤더를 더하며, 로그에 남던 접근 키를 제거하고 민감한 설정을 코드 밖으로 분리"],
               ].map(([lead, body]) => (
                 <li key={lead} className="flex gap-2">
                   <span className="text-blue-500 shrink-0">·</span>
@@ -74,7 +75,7 @@ export default function FeaturedProject() {
           </div>
 
           <p className="text-xs text-zinc-400">
-            18개 라우트 prerender 빌드 통과 · BE/AI/FE 3개 서버 동시 기동 검증 · 풀스택 동작 확인
+            전체 페이지 사전 빌드 통과 · 백엔드·AI·프론트 서버를 동시에 띄워 전체 동작까지 직접 확인
           </p>
         </article>
 
@@ -86,7 +87,7 @@ export default function FeaturedProject() {
                 건국대학교 스마트ICT융합공학과 · 2025 가을학기 · 졸업 프로젝트
               </p>
               <h3 className="text-xl font-bold text-zinc-900">제주어 다중감정분류</h3>
-              <p className="text-zinc-500 mt-0.5">GPT-4o 라벨링 + 고전 ML로 푸는 저자원 방언 감정 분류</p>
+              <p className="text-zinc-500 mt-0.5">데이터가 적은 제주 방언의 감정을 분류한 모델</p>
             </div>
             <a
               href="https://github.com/parksungyun0411/jeju-emotion-analysis"
@@ -99,28 +100,27 @@ export default function FeaturedProject() {
           </div>
 
           <p className="text-sm text-zinc-600 leading-relaxed mb-6">
-            AI Hub 제주어/표준어 병렬 데이터에{" "}
-            <strong className="font-medium text-zinc-800">GPT-4o로 7가지 감정 자동 라벨링</strong>을 적용하고,
-            TF-IDF + N-gram 특성을 4개 고전 ML 분류기(LR/SVM/RF/NB)로 비교해 저자원 방언 텍스트 감정 분류 모델 구축.{" "}
-            <strong className="font-medium text-zinc-800">KoELECTRA 베이스라인 대비 데이터 정제 기준 재설계</strong>로 성능 개선.
+            데이터가 부족한 제주 방언 문장의 감정을 분류하는 모델을 만든 졸업 프로젝트.{" "}
+            <strong className="font-medium text-zinc-800">라벨이 없는 문장을 GPT-4o로 7가지 감정으로 자동 분류</strong>해 학습 데이터를 만들고,
+            여러 머신러닝 모델을 비교해 가장 잘 맞는 조합을 찾았습니다.{" "}
+            <strong className="font-medium text-zinc-800">무거운 딥러닝 모델보다 데이터를 깨끗하게 다듬는 쪽이 더 안정적</strong>이라는 걸 실험으로 확인했습니다.
           </p>
 
           <div className="grid grid-cols-3 gap-3 mb-6">
             <Stat n="4,600+" label="학습 샘플 (AI Hub 제주어)" sub="" />
             <Stat n="7개" label="감정 라벨 (중립·기쁨·슬픔·분노·놀람·공포·혐오)" sub="" />
-            <Stat n="4개 분류기" label="LR / SVM / RF / NB · F1-Weighted" sub="" />
+            <Stat n="4종 비교" label="여러 머신러닝 모델 비교" sub="" />
           </div>
 
           <div className="mb-6">
             <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">기술 스택</p>
             <div className="flex flex-wrap gap-1.5">
               {[
-                "Python 3",
-                "scikit-learn (TF-IDF·LR·SVM·RF·NB)",
-                "OpenAI API (GPT-4o)",
+                "Python",
+                "scikit-learn",
+                "OpenAI (GPT-4o)",
                 "pandas · numpy",
                 "seaborn · matplotlib",
-                "openpyxl",
               ].map((s) => (
                 <span key={s} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
                   {s}
@@ -133,11 +133,11 @@ export default function FeaturedProject() {
             <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
             <ul className="space-y-1.5 text-sm text-zinc-600">
               {[
-                ["GPT-4o 자동 라벨링 파이프라인", "automation.py로 OpenAI API 호출 → 7-class 라벨링 + 수동 검증"],
-                ["실험 설계", "제주어 단독 / 표준어 / 통합 데이터 3-way 비교, F1-Weighted + 감정별 상세 분석"],
-                ["다중 문장 처리", "간단/완전 두 버전으로 입력 단위 변화 효과 검증"],
-                ["TF-IDF 깊이 분석", "단어/2-gram/3-gram 가중치 분포·F1 영향 문서화"],
-                ["KoELECTRA 베이스라인 대비", "저자원 환경에서 데이터 정제 기준 재설계로 고전 ML로 더 안정적 성능 확보"],
+                ["감정 데이터 자동 생성", "라벨이 없는 방언 문장을 GPT-4o로 7가지 감정으로 자동 분류하고, 사람이 다시 검수해 학습 데이터의 신뢰도를 확보"],
+                ["조건을 나눈 비교 실험", "제주 방언만 / 표준어만 / 둘을 합친 경우로 나눠, 어떤 데이터가 감정 분류에 더 유리한지 비교"],
+                ["입력 단위 효과 검증", "문장을 짧게 나눠 넣을 때와 통째로 넣을 때의 성능 차이를 확인"],
+                ["감정을 가르는 표현 분석", "감정 판단에 크게 작용한 단어·표현을 정리해, 모델이 무엇을 보고 판단하는지 해석"],
+                ["가벼운 모델로 더 안정적인 결과", "큰 딥러닝 모델 대신 데이터를 잘 다듬어, 단순한 머신러닝만으로 더 일관된 성능을 확보"],
               ].map(([lead, body]) => (
                 <li key={lead} className="flex gap-2">
                   <span className="text-blue-500 shrink-0">·</span>
