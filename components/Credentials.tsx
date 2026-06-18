@@ -41,12 +41,13 @@ export default function Credentials() {
           <h3 className="mb-4 text-sm font-semibold text-zinc-900">어학</h3>
           <ul className="divide-y divide-zinc-100">
             {languages.map((l) => (
-              <li key={l.name} className="flex items-baseline justify-between py-2.5">
+              <li
+                key={l.name}
+                className="grid grid-cols-[1fr_auto_3.5rem] items-baseline gap-x-3 py-2.5"
+              >
                 <span className="text-sm font-medium text-zinc-800">{l.name}</span>
-                <span className="flex items-baseline gap-2">
-                  <span className="font-bold text-zinc-900">{l.score}</span>
-                  <span className="text-xs text-zinc-400">{l.date}</span>
-                </span>
+                <span className="whitespace-nowrap text-right font-bold text-zinc-900">{l.score}</span>
+                <span className="text-right font-mono text-xs text-zinc-400">{l.date}</span>
               </li>
             ))}
           </ul>

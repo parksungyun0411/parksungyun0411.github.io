@@ -18,12 +18,13 @@ export default function About() {
           <strong className="font-medium text-zinc-800">
             실시간으로 수만 명에게 안정적으로 동작하는 AI 시스템
           </strong>
-          입니다. Graph-RAG 같은 비결정적 모듈을 결정적인 백엔드로 감싸고, 캐싱·인덱싱·관측
-          가능성을 더해 production-grade로 끌어올리는 일을 좋아합니다.
+          입니다. Graph-RAG처럼 결과가 매번 달라질 수 있는 AI 모듈을 안정적인 백엔드로 감싸고,
+          캐싱·인덱싱·모니터링을 더해 실제 서비스 수준으로 끌어올리는 일을 좋아합니다.
         </p>
         <p>
           현재 <strong className="font-medium text-zinc-800">DACON</strong>에서 운영 / 기획 / QA
-          매니저로 근무 중입니다 (2026.04~). 2025년 여름에는{" "}
+          매니저로 일하며, 해커톤 평가(ELO 순위) 시스템과 QA 자동화 도구를 직접 기획·구현하고 있습니다
+          (2026.04~). 2025년 여름에는{" "}
           <strong className="font-medium text-zinc-800">자빅스</strong>에서 클라우드·엔터프라이즈
           서비스 운영 인턴을 했고, 같은 해 한이음 드림업에서{" "}
           <strong className="font-medium text-zinc-800">NerdMath</strong> 프로젝트를

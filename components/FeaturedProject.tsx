@@ -59,7 +59,7 @@ export default function FeaturedProject() {
             <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
             <ul className="space-y-1.5 text-sm text-zinc-600">
               {[
-                ["Graph-RAG 학습경로", "Neo4j PRECEDES 그래프 → 진단·개념 오답 기반 취약 개념 탐지 → RAG fallback, 8주 로드맵 자동 생성"],
+                ["Graph-RAG 학습경로", "Neo4j 개념 선후관계 그래프로 진단·오답 기반 취약 개념을 찾고, 부족한 부분은 검색(RAG)으로 보완해 8주 로드맵 자동 생성"],
                 ["CLIL 단계 전환", "한국어 Pre-Nerd → 영어 Nerd 모드 (대단원 80%×3 ∧ 마라톤 10회 ∧ 레벨 20)"],
                 ["실 버그 fix", "MongoDB 연결 실패 시 BE 프로세스 죽는 버그(process.exit(1)) 제거 + retry 무한 루프 방지"],
                 ["모노레포 통합", "분리된 AI/BE/FE repo를 git subtree로 히스토리 보존하며 단일 모노레포로 통합"],
@@ -167,7 +167,7 @@ export default function FeaturedProject() {
 function Stat({ n, label, sub }: { n: string; label: string; sub: string }) {
   return (
     <div className="rounded-lg border border-zinc-200 bg-zinc-50/50 p-3">
-      <div className="text-2xl font-bold text-blue-600">{n}</div>
+      <div className="text-xl font-bold text-blue-600 break-keep leading-tight">{n}</div>
       <div className="text-xs text-zinc-500 mt-0.5">{label}</div>
       {sub && <div className="text-[11px] text-zinc-400 mt-0.5">{sub}</div>}
     </div>
