@@ -1,5 +1,5 @@
-import Sidebar from "@/components/Sidebar";
-import About from "@/components/About";
+import Masthead from "@/components/Masthead";
+import SiteNav from "@/components/SiteNav";
 import Experience from "@/components/Experience";
 import FeaturedProject from "@/components/FeaturedProject";
 import Projects from "@/components/Projects";
@@ -9,25 +9,17 @@ import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <div className="mx-auto max-w-6xl px-6 lg:px-12">
-      <div className="lg:flex lg:gap-16">
-        <Sidebar />
-        <main
-          id="content"
-          className="py-16 lg:w-7/12 lg:py-28 space-y-20 lg:space-y-28"
-        >
-          <About />
-          <Experience />
-          <FeaturedProject />
-          <Projects />
-          <Skills />
-          <Credentials />
-          <Contact />
-          <footer className="pt-8 text-xs text-zinc-400">
-            © 2026 박성윤 · Built with Next.js + Tailwind · Hosted on GitHub Pages
-          </footer>
-        </main>
-      </div>
+    <div id="top">
+      <Masthead />
+      <SiteNav />
+      <main className="mx-auto max-w-6xl space-y-24 px-6 pb-24 pt-16 lg:space-y-32 lg:px-10 lg:pt-20">
+        <Experience />
+        <FeaturedProject />
+        <Projects />
+        <Skills />
+        <Credentials />
+        <Contact />
+      </main>
     </div>
   );
 }

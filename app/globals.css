@@ -1,15 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #18181b;
+  --paper: oklch(0.975 0.006 85);
+  --paper-shade: oklch(0.955 0.008 85);
+  --ink: oklch(0.25 0.018 70);
+  --ink-soft: oklch(0.44 0.016 70);
+  --ink-faint: oklch(0.57 0.014 75);
+  --rule: oklch(0.865 0.012 80);
+  --rule-strong: oklch(0.32 0.02 70);
+  --accent: oklch(0.54 0.19 35);
+  --accent-deep: oklch(0.47 0.17 35);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-shade: var(--paper-shade);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --font-display: var(--font-hahmlet);
+  --font-sans: var(--font-gothic-a1);
 }
 
 html {
@@ -17,9 +31,51 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
-    "Segoe UI", "Pretendard", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-gothic-a1), "Apple SD Gothic Neo", sans-serif;
   -webkit-font-smoothing: antialiased;
+  font-feature-settings: "tnum";
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+/* 첫 로드 1회 등장 모션 — 마스트헤드 전용 */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.reveal {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.reveal-2 {
+  animation-delay: 0.08s;
+}
+.reveal-3 {
+  animation-delay: 0.16s;
+}
+.reveal-4 {
+  animation-delay: 0.24s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal,
+  .reveal-2,
+  .reveal-3,
+  .reveal-4 {
+    animation: none;
+  }
 }

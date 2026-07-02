@@ -1,175 +1,166 @@
+import Section from "./Section";
+
+/** 성과 표 데이터 — Test F1-Macro 기준 */
+const RESULTS = [
+  { model: "고전 ML 베이스라인 — TF-IDF + Naive Bayes", score: "0.2957", final: false },
+  { model: "KR-BERT 단일", score: "0.7593", final: false },
+  { model: "최종 — Dual-Gated KR-BERT + KoELECTRA 앙상블", score: "0.8404", final: true },
+];
+
+const LINK_STYLE =
+  "underline decoration-rule underline-offset-4 hover:decoration-accent hover:text-accent-deep transition-colors";
+
 export default function FeaturedProject() {
   return (
-    <section id="featured" className="scroll-mt-24">
-      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
-        03 — Featured Projects
-      </p>
-      <h2 className="mb-8 text-2xl font-bold text-zinc-900">Featured Projects</h2>
+    <Section index="02" id="featured" title="대표 프로젝트" kicker="Featured">
+      <article>
+        {/* 헤드라인 + 메타 */}
+        <h3 className="font-display text-[clamp(1.8rem,4vw,2.6rem)] font-bold leading-tight text-ink">
+          제주어 다중감정분류
+        </h3>
+        <p className="mt-3 text-sm text-ink-faint">
+          건국대학교 졸업 프로젝트 · 2025 가을학기 ·{" "}
+          <a
+            href="https://github.com/parksungyun0411/jeju-emotion-analysis"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={LINK_STYLE}
+          >
+            GitHub
+          </a>
+        </p>
 
-      <div className="space-y-6">
-        {/* === NerdMath === */}
-        <article className="rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-sm">
-          <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-            <div>
-              <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
-                한이음 드림업 2025 · 팀: 수정두유좋아
-              </p>
-              <h3 className="text-xl font-bold text-zinc-900">NerdMath · 너드수학</h3>
-              <p className="text-zinc-500 mt-0.5">학생마다 다른 학습 경로를 짜주는 AI 수학 학습 플랫폼</p>
-            </div>
-            <span className="bg-zinc-100 text-zinc-500 text-xs rounded-full px-3 py-1 shrink-0">
-              🔒 Private (NDA)
+        {/* 리드 문단 */}
+        <p className="mt-6 max-w-[62ch] font-display text-[1.15rem] font-medium leading-relaxed text-ink">
+          제주어/표준어 병렬 코퍼스를 GPT-4o로 7감정 라벨링해 학습 데이터를 직접
+          구축하고, Dual-Gated KR-BERT + KoELECTRA 앙상블의 7단계 딥러닝
+          파이프라인으로 F1-Macro 0.30에서 0.84까지 끌어올린 방언 감정 분류 NLP
+          프로젝트.
+        </p>
+
+        {/* 성과 표 — 괘선 테이블 */}
+        <figure className="mt-9">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-t border-b border-rule">
+                <th
+                  scope="col"
+                  className="py-2 pr-4 text-left text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint"
+                >
+                  Model
+                </th>
+                <th
+                  scope="col"
+                  className="py-2 text-right text-[11px] font-medium uppercase tracking-[0.18em] text-ink-faint"
+                >
+                  F1-Macro
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {RESULTS.map(({ model, score, final }) => (
+                <tr key={model} className="border-b border-rule">
+                  <td className="py-2 pr-4 text-sm leading-relaxed text-ink-soft">
+                    {model}
+                  </td>
+                  <td
+                    className={
+                      final
+                        ? "py-2 text-right text-sm font-bold text-accent-deep"
+                        : "py-2 text-right text-sm text-ink"
+                    }
+                  >
+                    {score}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <figcaption className="mt-2 text-xs text-ink-faint">
+            Test F1-Macro 기준, 강감정(공포·혐오·놀람) F1 0.87~0.95
+          </figcaption>
+        </figure>
+
+        {/* 본문 */}
+        <ul className="mt-9 max-w-[68ch] space-y-3 text-[15px] leading-relaxed text-ink-soft">
+          <li className="flex gap-3">
+            <span aria-hidden className="shrink-0 text-ink-faint">
+              —
             </span>
-          </div>
+            <span>
+              <strong className="font-medium text-ink">데이터 구축.</strong>{" "}
+              라벨링된 제주어 감정 데이터가 없는 상황에서 AI Hub 제주어/표준어
+              병렬 코퍼스(텍스트 파일 4,600여 개)와 한국어 단발성 대화
+              데이터셋을 수집·정제하고, GPT-4o API로
+              7감정(중립·기쁨·슬픔·분노·놀람·공포·혐오) 자동 라벨링 파이프라인을
+              구축(수동 검증 병행) — 최종 학습 데이터 127,324행, 7클래스 균형.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span aria-hidden className="shrink-0 text-ink-faint">
+              —
+            </span>
+            <span>
+              <strong className="font-medium text-ink">
+                고전 ML 한계 규명.
+              </strong>{" "}
+              TF-IDF + N-gram 베이스라인(LR·SVM·RF·NB) 실험으로 F1-Macro 약
+              0.30에 머무는 전통 ML의 한계를 정량 규명하고 딥러닝 전환 근거를
+              확보.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span aria-hidden className="shrink-0 text-ink-faint">
+              —
+            </span>
+            <span>
+              <strong className="font-medium text-ink">
+                7단계 최적화 파이프라인.
+              </strong>{" "}
+              KR-BERT 베이스라인 → 데이터 밸런싱 → Dual-Gated
+              KR-BERT(제주어/표준어 shared 인코더 + 게이팅 융합) → 제주어
+              토크나이저 최적화 → DAPT → Hard Mining → KoELECTRA 앙상블을
+              단계적으로 설계·구현.
+            </span>
+          </li>
+          <li className="flex gap-3">
+            <span aria-hidden className="shrink-0 text-ink-faint">
+              —
+            </span>
+            <span>
+              <strong className="font-medium text-ink">최종 성과.</strong>{" "}
+              테스트셋 F1-Macro 0.8404, 강감정(공포·혐오·놀람) F1 0.87~0.95 —
+              데이터 구축부터 모델 설계·실험·분석까지 직접 수행.
+            </span>
+          </li>
+        </ul>
 
-          <p className="text-sm text-zinc-600 leading-relaxed mb-6">
-            수학을 포기한 학생도 다시 붙들 수 있도록, 진단 결과를 분석해 학생마다 다른{" "}
-            <strong className="font-medium text-zinc-800">학습 경로를 자동으로 짜주는</strong> AI 수학 학습 플랫폼.
-            진단 추천 알고리즘과 AI 챗봇 같은 AI 기능부터 보안·안정성·배포 구조까지, 백엔드 전반을 맡았습니다.
+        {/* 기술 줄 */}
+        <p className="mt-7 text-sm text-ink-faint">
+          Python · PyTorch · HuggingFace Transformers · scikit-learn · KR-BERT ·
+          KoELECTRA · OpenAI GPT-4o API · pandas · numpy · seaborn
+        </p>
+
+        {/* 후속 두 줄 */}
+        <div className="mt-10">
+          <p className="border-t border-rule pt-4 text-sm leading-relaxed text-ink-soft">
+            <strong className="font-medium text-ink">
+              후속 확장 — 탐라(Tamna).
+            </strong>{" "}
+            감정 분류·번역 모델을 서비스로 확장 — KoBART 제주어↔표준어 번역,
+            FastAPI ML 추론 API, Next.js 15 모바일 웹앱이 동일 리포지토리에
+            포함.
           </p>
-
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <Stat n="대단원 80%×3" label="Nerd 모드 전환 조건" sub="" />
-            <Stat n="20문제 / 15분" label="진단 테스트" sub="" />
-            <Stat n="&lt; 50ms" label="개념 검색 응답 속도" sub="" />
-          </div>
-
-          <div className="mb-6">
-            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">기술 스택</p>
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                "Next.js · React · TypeScript",
-                "FastAPI · LangChain",
-                "Node.js · Express",
-                "MongoDB",
-                "Neo4j",
-                "PostgreSQL",
-                "Redis",
-                "Pinecone · Chroma",
-                "Tailwind · Zustand · TanStack Query",
-              ].map((s) => (
-                <span key={s} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
-            <ul className="space-y-1.5 text-sm text-zinc-600">
-              {[
-                ["학생 맞춤 학습 경로", "진단으로 학생이 막힌 부분을 찾고, 개념의 선후 관계를 따라 부족한 곳부터 채우는 맞춤 학습 경로를 자동으로 생성"],
-                ["AI 챗봇·풀이 도우미", "학생 질문을 '문제 풀이 / 개념 설명 / 일반 질문'으로 자동 분류해, 맥락에 맞는 답을 실시간으로 이어서 보여주는 챗봇 구현"],
-                ["문제 자동 디지털화", "종이·이미지 속 문항을 OCR로 수식까지 인식해, 사람이 일일이 옮기지 않아도 구조화된 데이터로 자동 변환·저장"],
-                ["서버가 죽던 버그 해결", "DB 연결이 한 번 실패하면 백엔드 전체가 멈추던 문제를, 타임아웃·예외 처리로 고쳐 일시적 장애에도 서비스가 계속 동작하도록 개선"],
-                ["흩어진 코드 통합", "AI·백엔드·프론트엔드로 따로 관리되던 3개 저장소를, 작업 이력을 보존하며 하나로 합쳐 협업·배포를 단순화"],
-                ["보안 강화", "외부 접근을 허용된 주소로만 제한하고 보안 헤더를 더하며, 로그에 남던 접근 키를 제거하고 민감한 설정을 코드 밖으로 분리"],
-              ].map(([lead, body]) => (
-                <li key={lead} className="flex gap-2">
-                  <span className="text-blue-500 shrink-0">·</span>
-                  <span><strong className="font-medium text-zinc-800">{lead}:</strong> {body}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <p className="text-xs text-zinc-400">
-            전체 페이지 사전 빌드 통과 · 백엔드·AI·프론트 서버를 동시에 띄워 전체 동작까지 직접 확인
+          <p className="mt-4 border-t border-rule pt-4 text-sm leading-relaxed text-ink-soft">
+            <strong className="font-medium text-ink">
+              비공개 작업 — 너드수학(NerdMath).
+            </strong>{" "}
+            한이음 드림업 AI 수학 튜터의 백엔드·AI 엔진 — NDA 비공개
+            리포지토리. Graph-RAG 학습 추천 엔진과 RAG 챗봇을 각 완성도 90%까지
+            구축, 추론 응답 속도 50ms 미만.
           </p>
-        </article>
-
-        {/* === 제주어 다중감정분류 === */}
-        <article className="rounded-xl border border-zinc-200 bg-white p-6 transition-all hover:border-zinc-300 hover:shadow-sm">
-          <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-            <div>
-              <p className="text-xs uppercase tracking-widest text-zinc-400 mb-1">
-                건국대학교 스마트ICT융합공학과 · 2025 가을학기 · 졸업 프로젝트
-              </p>
-              <h3 className="text-xl font-bold text-zinc-900">제주어 다중감정분류</h3>
-              <p className="text-zinc-500 mt-0.5">데이터가 적은 제주 방언의 감정을 분류한 모델</p>
-            </div>
-            <a
-              href="https://github.com/parksungyun0411/jeju-emotion-analysis"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-zinc-100 text-blue-600 text-xs rounded-full px-3 py-1 shrink-0 hover:underline"
-            >
-              🎓 GitHub →
-            </a>
-          </div>
-
-          <p className="text-sm text-zinc-600 leading-relaxed mb-6">
-            데이터가 부족한 제주 방언 문장의 감정을 분류하는 모델을 만든 졸업 프로젝트.{" "}
-            <strong className="font-medium text-zinc-800">라벨이 없는 문장을 GPT-4o로 7가지 감정으로 자동 분류</strong>해 학습 데이터를 만들고,
-            여러 머신러닝 모델을 비교해 가장 잘 맞는 조합을 찾았습니다.{" "}
-            <strong className="font-medium text-zinc-800">무거운 딥러닝 모델보다 데이터를 깨끗하게 다듬는 쪽이 더 안정적</strong>이라는 걸 실험으로 확인했습니다.
-          </p>
-
-          <div className="grid grid-cols-3 gap-3 mb-6">
-            <Stat n="4,600+" label="학습 샘플 (AI Hub 제주어)" sub="" />
-            <Stat n="7개" label="감정 라벨 (중립·기쁨·슬픔·분노·놀람·공포·혐오)" sub="" />
-            <Stat n="4종 비교" label="여러 머신러닝 모델 비교" sub="" />
-          </div>
-
-          <div className="mb-6">
-            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">기술 스택</p>
-            <div className="flex flex-wrap gap-1.5">
-              {[
-                "Python",
-                "scikit-learn",
-                "OpenAI (GPT-4o)",
-                "pandas · numpy",
-                "seaborn · matplotlib",
-              ].map((s) => (
-                <span key={s} className="rounded-md bg-zinc-100 px-2 py-1 text-xs text-zinc-600 font-mono">
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <p className="text-xs uppercase tracking-widest text-zinc-400 mb-2">핵심 구현</p>
-            <ul className="space-y-1.5 text-sm text-zinc-600">
-              {[
-                ["감정 데이터 자동 생성", "라벨이 없는 방언 문장을 GPT-4o로 7가지 감정으로 자동 분류하고, 사람이 다시 검수해 학습 데이터의 신뢰도를 확보"],
-                ["조건을 나눈 비교 실험", "제주 방언만 / 표준어만 / 둘을 합친 경우로 나눠, 어떤 데이터가 감정 분류에 더 유리한지 비교"],
-                ["입력 단위 효과 검증", "문장을 짧게 나눠 넣을 때와 통째로 넣을 때의 성능 차이를 확인"],
-                ["감정을 가르는 표현 분석", "감정 판단에 크게 작용한 단어·표현을 정리해, 모델이 무엇을 보고 판단하는지 해석"],
-                ["가벼운 모델로 더 안정적인 결과", "큰 딥러닝 모델 대신 데이터를 잘 다듬어, 단순한 머신러닝만으로 더 일관된 성능을 확보"],
-              ].map(([lead, body]) => (
-                <li key={lead} className="flex gap-2">
-                  <span className="text-blue-500 shrink-0">·</span>
-                  <span><strong className="font-medium text-zinc-800">{lead}:</strong> {body}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <p className="text-xs text-zinc-400">
-            GitHub →{" "}
-            <a
-              href="https://github.com/parksungyun0411/jeju-emotion-analysis"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              https://github.com/parksungyun0411/jeju-emotion-analysis
-            </a>
-          </p>
-        </article>
-      </div>
-    </section>
-  );
-}
-
-function Stat({ n, label, sub }: { n: string; label: string; sub: string }) {
-  return (
-    <div className="rounded-lg border border-zinc-200 bg-zinc-50/50 p-3">
-      <div className="text-xl font-bold text-blue-600 break-keep leading-tight">{n}</div>
-      <div className="text-xs text-zinc-500 mt-0.5">{label}</div>
-      {sub && <div className="text-[11px] text-zinc-400 mt-0.5">{sub}</div>}
-    </div>
+        </div>
+      </article>
+    </Section>
   );
 }
