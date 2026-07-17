@@ -19,7 +19,7 @@ export default function FeaturedProject() {
           제주어 다중감정분류
         </h3>
         <p className="mt-3 text-sm text-ink-faint">
-          건국대학교 졸업 프로젝트 · 2025 가을학기 ·{" "}
+          건국대학교 졸업 프로젝트 · 2025 가을학기 · 4인 팀 ·{" "}
           <a
             href="https://github.com/parksungyun0411/jeju-emotion-analysis"
             target="_blank"
@@ -130,7 +130,7 @@ export default function FeaturedProject() {
             <span>
               <strong className="font-medium text-ink">최종 성과.</strong>{" "}
               테스트셋 F1-Macro 0.8404, 강감정(공포·혐오·놀람) F1 0.87~0.95 —
-              데이터 구축부터 모델 설계·실험·분석까지 직접 수행.
+              4인 팀에서 데이터 구축·모델 설계·실험·분석 담당.
             </span>
           </li>
         </ul>

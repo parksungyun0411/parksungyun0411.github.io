@@ -17,7 +17,7 @@ const projects: ProjectRow[] = [
   {
     no: "01",
     title: "제주어 다중감정분류",
-    meta: "건국대 졸업 프로젝트 · 2025.09 – 2025.12",
+    meta: "건국대 졸업 프로젝트 · 4인 팀 · 2025.09 – 2025.12",
     summary:
       "제주어/표준어 병렬 코퍼스를 GPT-4o로 7감정 라벨링해 데이터를 직접 구축하고, Dual-Gated KR-BERT + KoELECTRA 앙상블의 7단계 딥러닝 파이프라인으로 F1-Macro 0.30 → 0.84를 달성한 방언 감정 분류 NLP 프로젝트.",
     tech: "Python · PyTorch · HuggingFace Transformers",
