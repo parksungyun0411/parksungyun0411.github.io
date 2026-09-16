@@ -1,36 +1,36 @@
 import type { Metadata } from "next";
-import { Hahmlet, Gothic_A1 } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans_KR } from "next/font/google";
+import { site } from "@/content/site";
 import "./globals.css";
 
-// 한글 폰트는 unicode-range 조각이 100+개라 전체 preload 시 초기 로드가 무거워짐
-// → preload 끄고 필요한 조각만 내려받게 한다
-const hahmlet = Hahmlet({
+// devportfolio 는 IBM Plex Mono 단일 서체. 한글 본문은 같은 가족의 Plex Sans KR 로 받는다.
+const plexMono = IBM_Plex_Mono({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-hahmlet",
+  variable: "--font-plex-mono",
   display: "swap",
-  preload: false,
 });
 
-const gothicA1 = Gothic_A1({
-  weight: ["400", "500", "700", "800"],
+const plexSansKr = IBM_Plex_Sans_KR({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-gothic-a1",
+  variable: "--font-plex-sans-kr",
   display: "swap",
   preload: false,
 });
 
 export const metadata: Metadata = {
-  title: "박성윤 · Park Sungyun",
-  description:
-    "데이터와 AI로 사용자의 본질적인 문제를 찾아 해결하는 엔지니어 — 기획부터 구현·QA·배포까지.",
+  metadataBase: new URL("https://parksungyun0411.github.io"),
+  title: `${site.name} | ${site.title}`,
+  description: site.description,
   openGraph: {
-    title: "박성윤 · Park Sungyun",
-    description:
-      "데이터와 AI로 사용자의 본질적인 문제를 찾아 해결하는 엔지니어 — 기획부터 구현·QA·배포까지.",
+    title: `${site.name} | ${site.title}`,
+    description: site.description,
     url: "https://parksungyun0411.github.io",
     siteName: "parksungyun0411 portfolio",
     locale: "ko_KR",
     type: "website",
+    images: ["/profile.jpg"],
   },
 };
 
@@ -42,9 +42,9 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${hahmlet.variable} ${gothicA1.variable} h-full`}
+      className={`${plexMono.variable} ${plexSansKr.variable} h-full`}
     >
-      <body className="min-h-full bg-paper text-ink">{children}</body>
+      <body className="min-h-full bg-bg text-fg">{children}</body>
     </html>
   );
 }

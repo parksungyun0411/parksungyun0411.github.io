@@ -1,29 +1,65 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* devportfolio 계열: 흰 바탕, 진회색 글자, 하나의 블루 포인트 */
 :root {
-  --paper: oklch(0.975 0.006 85);
-  --paper-shade: oklch(0.955 0.008 85);
-  --ink: oklch(0.25 0.018 70);
-  --ink-soft: oklch(0.44 0.016 70);
-  --ink-faint: oklch(0.57 0.014 75);
-  --rule: oklch(0.865 0.012 80);
-  --rule-strong: oklch(0.32 0.02 70);
-  --accent: oklch(0.54 0.19 35);
-  --accent-deep: oklch(0.47 0.17 35);
+  --bg: #ffffff;
+  --bg-soft: #f9fafb;
+  --fg: #1f2937;
+  --fg-soft: #4b5563;
+  --fg-muted: #6b7280;
+  --line: #e5e7eb;
+  --pill: #f3f4f6;
+  --pill-strong: #111827;
+  --pill-strong-fg: #ffffff;
+  --accent: #1d4ed8;
+  --accent-soft: rgba(29, 78, 216, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1115;
+    --bg-soft: #151821;
+    --fg: #e5e7eb;
+    --fg-soft: #cbd5e1;
+    --fg-muted: #94a3b8;
+    --line: #262b36;
+    --pill: #1c2130;
+    --pill-strong: #e5e7eb;
+    --pill-strong-fg: #0f1115;
+    --accent: #60a5fa;
+    --accent-soft: rgba(96, 165, 250, 0.2);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1115;
+  --bg-soft: #151821;
+  --fg: #e5e7eb;
+  --fg-soft: #cbd5e1;
+  --fg-muted: #94a3b8;
+  --line: #262b36;
+  --pill: #1c2130;
+  --pill-strong: #e5e7eb;
+  --pill-strong-fg: #0f1115;
+  --accent: #60a5fa;
+  --accent-soft: rgba(96, 165, 250, 0.2);
 }
 
 @theme inline {
-  --color-paper: var(--paper);
-  --color-paper-shade: var(--paper-shade);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-ink-faint: var(--ink-faint);
-  --color-rule: var(--rule);
-  --color-rule-strong: var(--rule-strong);
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-fg-muted: var(--fg-muted);
+  --color-line: var(--line);
+  --color-pill: var(--pill);
+  --color-pill-strong: var(--pill-strong);
+  --color-pill-strong-fg: var(--pill-strong-fg);
   --color-accent: var(--accent);
-  --color-accent-deep: var(--accent-deep);
-  --font-display: var(--font-hahmlet);
-  --font-sans: var(--font-gothic-a1);
+  --color-accent-soft: var(--accent-soft);
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: var(--font-plex-sans-kr), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 
 html {
@@ -31,51 +67,49 @@ html {
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-gothic-a1), "Apple SD Gothic Neo", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-plex-sans-kr), "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-feature-settings: "tnum";
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 ::selection {
   background: var(--accent);
-  color: var(--paper);
+  color: #fff;
 }
 
-/* 첫 로드 1회 등장 모션 — 마스트헤드 전용 */
-@keyframes rise {
+/* 첫 화면 등장 (히어로 전용, 한 번만) */
+@keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
-    transform: none;
+    transform: translateY(0);
   }
 }
 
-.reveal {
-  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.reveal-2 {
-  animation-delay: 0.08s;
-}
-.reveal-3 {
-  animation-delay: 0.16s;
-}
-.reveal-4 {
-  animation-delay: 0.24s;
+@media (prefers-reduced-motion: no-preference) {
+  .fade-up {
+    animation: fade-up 0.8s ease-out both;
+  }
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+  .delay-400 {
+    animation-delay: 0.4s;
+  }
+  .delay-600 {
+    animation-delay: 0.6s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .reveal,
-  .reveal-2,
-  .reveal-3,
-  .reveal-4 {
-    animation: none;
   }
 }
