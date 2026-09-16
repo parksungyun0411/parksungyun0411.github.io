@@ -25,6 +25,21 @@ const projects: ProjectRow[] = [
   },
   {
     no: "02",
+    title: "교통사고 위험 예측 AI 플랫폼",
+    meta: "데이콘 재직 · 공공기관 납품(NIA 정책 수립 지원 데이터 분석 사업) · 2026 · 비공개 저장소",
+    summary:
+      "운수종사자의 운전적성정밀검사 결과와 사고 이력으로 개인별 사고 위험도를 산출하고 SHAP으로 요인을 설명하는 웹 플랫폼 — 경진대회로 확보한 우수 모델을 공공기관 현업에 배포하는 단계의 산출물. 외부망이 분리된 Windows PC 한 대에 포터블 zip으로 설치되는 구조로 v4~v9.3.0 릴리스.",
+    bullets: [
+      "AI 엔진(FastAPI): 도메인별 부스팅 모델 7종의 logit 가중합 + temperature scaling 앙상블과 LightGBM 시퀀스·시간차 피처 모델을 블렌딩, 공식 스코어(0.5·(1−AUC)+0.25·Brier+0.25·ECE) 기준 가중치 탐색, 24개월 관찰창·코호트 90분위 라벨링, 엑셀 전 시트 스트리밍 적재와 SQLite WAL 배치 UPSERT",
+      "화면(React·Mantine): 대시보드·운전자 목록(URL 동기화 필터)·개별 정밀 진단(검사 이력 라이브 예측)·비교 분석·500명 단위 zip 다운로드(나눔고딕 내장 벡터 PDF/HTML 보고서)·관리자 재학습·모델 버전·데이터 관리",
+      "배포: 임베디드 Python·JRE·nginx와 오프라인 wheel 53개를 담은 포터블 zip, 관리자 권한·여유 공간 검사·파일 단위 덮어쓰기·자동 시작 등록을 멱등하게 수행하는 설치 스크립트와 롤백 절차 — 현장 보안 프로그램의 폴더 이동 차단으로 설치가 실패한 뒤 설치 방식을 전면 재작성(v7), 첫 시트만 읽던 학습 업로드로 검사 이력이 빠지던 결함을 근본 수정(v9)",
+      "발주기관 보안 조항(용역 결과물·소스코드 누출 금지)에 따라 코드는 개인 비공개 저장소에만 두고, 기관명·연락처·로고·비밀번호·데이터를 제거한 사본으로 보관 — 면접 시 선별 공유",
+    ],
+    tech: "Python · FastAPI · scikit-learn · LightGBM · XGBoost · CatBoost · SHAP · SQLite · React · Mantine · jsPDF · Spring Boot(eGovFrame) · nginx · Windows 배포 스크립트",
+    links: [{ label: "01 실무 경험에서 상세 보기", href: "#experience" }],
+  },
+  {
+    no: "03",
     title: "liar-game",
     meta: "네트워크 프로그래밍 팀 프로젝트(3인) · 2024.03 – 2024.05",
     summary:
@@ -43,7 +58,7 @@ const projects: ProjectRow[] = [
     ],
   },
   {
-    no: "03",
+    no: "04",
     title: "university-coursework",
     meta: "건국대 스마트ICT융합공학과 · 2020 – 2025",
     summary:
