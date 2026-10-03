@@ -1,78 +1,104 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HorizontalCard from "../components/HorizontalCard.astro";
+import { featuredProjects, projects } from "../data/projects";
 import { getCollection } from "astro:content";
-import createSlug from "../lib/createSlug"
 
-const posts = (await getCollection("blog")).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const last_posts = posts.slice(0, 3);
+const latestNotes = (await getCollection("notes"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+const accentOf = (slug?: string) =>
+  projects.find((p) => p.slug === slug)?.color ?? "#6366f1";
 ---
 
 <BaseLayout sideBarActiveItemID="home">
   <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey there 👋</div>
-    <div class="text-5xl font-bold">I'm Manuel Ernesto</div>
-    <div class="text-3xl py-3 font-bold">Software Engineer and Entrepreneur</div>
+    <div class="text-5xl font-bold">박성윤 · Park Sungyun</div>
+    <div class="text-3xl py-3 font-bold break-keep">데이터와 AI로 사용자의 본질적인 문제를 찾아 해결합니다. 기획부터 구현·QA·배포까지.</div>
     <div class="py-2">
-      <text class="text-lg">
-        This is <b>Astrofy</b> a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS.
-        Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed. I hope you find
-        it useful!
-      </text>
+      <p class="text-lg break-keep">
+        데이콘 운영·개발 파트에서 <b>AI 경진대회 플랫폼의 평가 시스템</b>을 기획부터 배포까지 맡고,<br class="hidden md:inline" />
+        플랫폼 전반의 <b>주간 QA</b>를 담당하고 있습니다.<br class="hidden md:inline" />
+        건국대학교에서 스마트ICT융합공학과와 응용통계학과를 전공했습니다.
+      </p>
     </div>
-    <div class="mt-8">
-      <a class="btn" href="https://twitter.com/manuelernestog" target="_blank"> Let's connect!</a>
-      <a href="https://github.com/manuelernestog/astrofy" target="_blank" class="btn btn-outline ml-5">
-        Get This template
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn btn-outline" href="/projects">Projects</a>
+      <a class="btn btn-outline" href="/notes">Notes</a>
+      <a class="btn btn-outline" href="/cv">CV</a>
+      <a
+        class="btn btn-outline gap-1"
+        href="https://github.com/parksungyun0411"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        GitHub
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7"/><path d="M7 7h10v10"/>
+        </svg>
       </a>
     </div>
   </div>
 
   <div>
-    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
+    <div class="text-3xl w-full font-bold mb-2">대표 프로젝트</div>
+    <p class="text-sm opacity-70 mb-5">카드를 누르면 프로젝트 상세 페이지로 이동합니다.</p>
   </div>
 
-  <HorizontalCard
-    title="Demo Project 1"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="NEW"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 2"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-  />
-  <div class="divider my-0"></div>
-  <HorizontalCard
-    title="Demo Project 3"
-    img="/post_img.webp"
-    desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    url="#"
-    badge="FOSS"
-  />
+  <div class="grid gap-4">
+    {
+      featuredProjects.map((p) => (
+        <HorizontalCard
+          title={p.title}
+          desc={p.summary}
+          url={`/projects/${p.slug}/`}
+          badge={p.badge}
+          result={p.result}
+          hero={p.hero}
+          color={p.color}
+        />
+      ))
+    }
+  </div>
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
+  <div class="mt-10 text-center">
+    <a class="btn btn-outline" href="/projects">전체 프로젝트 보기 →</a>
   </div>
 
   {
-    last_posts.map((post) => (
-      <>
-        <HorizontalCard
-          title={post.data.title}
-          img={post.data.heroImage}
-          desc={post.data.description}
-          url={"/blog/" + createSlug(post.data.title, post.slug)}
-          target="_self"
-          badge={post.data.badge}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
+    latestNotes.length > 0 && (
+      <div class="mt-14">
+        <div class="text-3xl w-full font-bold mb-2">기술 노트</div>
+        <p class="text-sm opacity-70 mb-5">
+          프로젝트에서 내린 설계 판단의 이유와 확인한 수치, 남은 한계를 기록합니다.
+        </p>
+        <div class="grid gap-3">
+          {latestNotes.map((note) => (
+            <a
+              href={`/notes/${note.slug}/`}
+              class="group relative block overflow-hidden rounded-lg border border-base-300 bg-base-100 p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_10px_28px_-14px_rgba(0,0,0,0.2)]"
+              style={`--accent:${accentOf(note.data.project)};`}
+            >
+              <span
+                class="pointer-events-none absolute inset-y-0 left-0 w-[3px] opacity-70"
+                style="background:var(--accent);"
+                aria-hidden="true"
+              />
+              <div class="text-xs font-mono opacity-60 mb-1 uppercase tracking-wide">{note.data.topic}</div>
+              <div class="font-semibold leading-snug">{note.data.title}</div>
+              <span
+                class="pointer-events-none absolute right-4 top-4 text-base-content/40 opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
+          ))}
+        </div>
+        <div class="mt-6 text-center">
+          <a class="btn btn-outline" href="/notes">전체 노트 보기 →</a>
+        </div>
+      </div>
+    )
   }
 </BaseLayout>
