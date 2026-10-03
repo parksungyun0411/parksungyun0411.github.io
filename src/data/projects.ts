@@ -133,19 +133,19 @@ const allProjects: Project[] = [
       "국민권익위 민원정책 질의응답의 실제 시민 질의로 dense → 하이브리드 → 리랭커 검색 설정을 같은 조건에서 비교하는 실험입니다. 아직 측정 전입니다.",
     hero: "/projects/minwon-rag.svg",
     color: "#14b8a6",
-    stack: ["Python", "OpenSearch", "KURE-v1", "BGE-M3", "bge-reranker-v2-m3", "Docker"],
+    stack: ["Python", "KURE-v1", "bge-m3", "Kiwi + BM25", "bge-reranker-v2-m3", "OpenSearch (선택)", "rag-eval-harness"],
     body: [
       {
         heading: "설계",
-        text: "data.go.kr의 국민권익위 「민원정책 질의응답 조회서비스」에서 민원을 수집하고, 기준일 이전 민원은 검색 코퍼스로, 이후 민원은 평가 질의 후보로 나눕니다. 질의가 코퍼스보다 늦게 등록되므로 과거 사례로 새 민원에 답하는 실제 사용 순서를 따릅니다.",
+        text: "민원 질의는 시민이 쓴 구어체이고 기관 답변은 행정 문체라 같은 내용도 어휘가 많이 어긋납니다. 어휘 일치에 기대는 BM25와 의미 유사도에 기대는 dense 검색의 결과가 갈리는 데이터라 하이브리드·리랭커의 효과를 보기에 맞다고 판단했습니다. data.go.kr API로 민원을 수집해 기준일 이전 민원은 검색 코퍼스, 이후 민원 150건은 평가 질의로 나눕니다. 평가 질의는 LLM으로 합성하지 않고 실제 민원을 그대로 쓰며, 정답 라벨은 기관 답변에 붙은 인용 법령으로 자동 생성합니다(조문 일치는 강, 법령·기관 일치는 약).",
       },
       {
         heading: "비교할 설정",
-        text: "BM25, dense(KURE-v1, BGE-M3), 둘을 RRF로 묶은 하이브리드, 하이브리드 위에 bge-reranker-v2-m3 리랭커를 얹은 설정을 한 매트릭스에서 돌립니다. 지표는 hit@k·recall@k·MRR·nDCG·mAP에 Wilson 신뢰구간을 붙이고, 기준 설정 대비 McNemar 검정과 p95 지연을 함께 봅니다.",
+        text: "Kiwi 형태소 분석 + BM25, dense(KURE-v1, bge-m3), 둘을 RRF로 묶은 하이브리드, 그 위에 bge-reranker-v2-m3로 상위 50건을 다시 정렬하는 설정까지 7종을 한 매트릭스에서 돌립니다. 기준 설정은 dense-kure이고, 지표는 hit@k·recall@k·MRR·nDCG·mAP에 Wilson 신뢰구간과 기준 대비 McNemar 검정, p95 지연을 붙입니다. 평가·통계·보고서는 rag-eval-harness를 의존성으로 씁니다.",
       },
       {
         heading: "상태",
-        text: "수집·분할·검색·리포트 코드를 작성하는 단계로, 아직 측정을 실행하지 않았습니다. 보고서는 측정 결과에서 자동 생성하도록 해 두었고, 결과가 나오기 전에는 이 페이지에 수치를 싣지 않습니다.",
+        text: "수집기·전처리·검색·평가 코드와 단위 테스트까지 작성했습니다. 공공데이터포털 인증키를 받기 전이라 실데이터 수집과 측정은 아직 하지 않았고, 결과가 나오기 전에는 이 페이지에 수치를 싣지 않습니다.",
       },
     ],
     draft: false,
@@ -162,7 +162,7 @@ const allProjects: Project[] = [
       "도메인에 묶이지 않는 검색·RAG 평가 도구입니다. 랭킹 지표, 신뢰구간과 대응 검정, 실험 매트릭스, 실제 질의 대 합성 질의 골든셋 비교를 한 패키지로 묶습니다.",
     hero: "/projects/rag-eval-harness.svg",
     color: "#8b5cf6",
-    stack: ["Python", "NumPy", "SciPy", "matplotlib", "pytest", "GitHub Actions"],
+    stack: ["Python", "NumPy", "SciPy", "matplotlib", "Anthropic / OpenAI 호환 API", "pytest", "GitHub Actions"],
     body: [
       {
         heading: "설계",
@@ -170,11 +170,11 @@ const allProjects: Project[] = [
       },
       {
         heading: "골든셋 비교와 LLM 판정",
-        text: "코퍼스에서 문서를 뽑아 LLM이 질의를 쓰게 한 합성 골든셋을 만들고, 실제 질의 골든셋과 설정 순위가 얼마나 일치하는지 Kendall tau-b와 Spearman rho로 봅니다. 답변 표본은 LLM이 항목별 1~5점으로 판정하고, 파싱되지 않은 판정은 집계에서 빼고 따로 남깁니다.",
+        text: "같은 검색 설정들을 실제 시민 질의 골든셋과 LLM이 합성한 질의 골든셋으로 각각 재고, 점수 차이와 설정 순위 상관(Kendall tau-b, Spearman rho)을 계산합니다. 합성 골든셋이 점수를 부풀리더라도 설정 순위가 같다면 설정을 고르는 용도로는 쓸 수 있고, 순위까지 바뀐다면 합성 골든셋으로 고른 설정이 실제 질의에서는 최선이 아닐 수 있다는 질문입니다. 답변 표본은 LLM이 근거성·정확성·유용성을 1~5점으로 판정하고, 파싱되지 않은 판정은 집계에서 빼고 따로 남깁니다.",
       },
       {
         heading: "상태",
-        text: "지표·통계·매트릭스 코드와 합성 픽스처 기반 테스트를 작성하는 단계로, 실제 데이터 측정은 아직입니다.",
+        text: "패키지 코드와 단위 테스트(랭킹 지표는 손으로 계산한 값과 대조)까지 작성했습니다. 공공데이터 인증키와 LLM 키를 받기 전이라 측정은 아직 하지 않았습니다.",
       },
     ],
     draft: false,
@@ -188,7 +188,7 @@ const allProjects: Project[] = [
     period: "2026.10 – 진행 중",
     org: "개인 프로젝트 (저장소 비공개)",
     summary:
-      "국세청·금융위·OpenDART 공공 API에 실패를 일부러 주입해, 거래처 점검 에이전트가 얼마나 복구하는지 재려는 실험입니다. 아직 측정 전입니다.",
+      "국세청·금융위·OpenDART 공공 API에 실패를 일부러 주입해, 거래처 점검 에이전트가 복구 전략별로 얼마나 회복하는지와 실패를 정상처럼 보고하는 비율을 재려는 실험입니다. 아직 측정 전입니다.",
     hero: "/projects/vendor-check-agent.svg",
     color: "#f59e0b",
     stack: ["Python", "LangGraph", "MCP", "httpx", "Starlette"],
@@ -207,7 +207,7 @@ const allProjects: Project[] = [
       },
       {
         heading: "상태",
-        text: "툴·프록시·MCP 서버 코드를 작성하는 단계로, 복구율 측정은 아직 하지 않았습니다.",
+        text: "가장 비싼 사고는 툴이 실패했는데 점검 결과가 정상으로 나가는 경우라고 보고 그 비율을 따로 잽니다. 고정 순서 파이프라인(대조군)과 에이전트는 같은 툴과 복구 코드를 써서 차이가 그래프 구조에서만 나도록 했습니다. 코드와 테스트(합성 데이터로 응답하는 가짜 업스트림)는 작성했고, 실험 측정은 아직 하지 않았습니다.",
       },
     ],
     draft: false,
@@ -228,15 +228,16 @@ const allProjects: Project[] = [
     body: [
       {
         heading: "설계",
-        text: "kanana-1.5-2.1b, Qwen3-4B, Midm-2.0-Mini 세 모델을 제로샷, 클래스당 1개 퓨샷, LoRA bf16, LoRA AWQ 4bit로 나눠 같은 7감정 분류에 붙이고, 졸업 프로젝트의 KoELECTRA + Dual KR-BERT 앙상블과 비교합니다.",
+        text: "졸업 프로젝트와 같은 데이터·7:1:2 층화 분할·seed 42에서 kanana-1.5-2.1b, Qwen3-4B, Midm-2.0-Mini 세 모델을 제로샷, 클래스당 1개 퓨샷, LoRA bf16, LoRA AWQ 4bit로 나눠 붙이고, 기존 KoELECTRA + Dual KR-BERT 앙상블과 비교합니다. 후보 모델은 상업 이용이 가능한 라이선스만 골랐고, 비상업 라이선스인 EXAONE 4.0 1.2B는 제외했습니다.",
+
       },
       {
         heading: "보는 지표",
-        text: "기계 라벨 기준과 사람 검수 표본 기준 macro-F1을 따로 보고, 생성 출력의 파싱 실패율, 처리량(건/s), p95 지연, 100만 건당 비용을 함께 기록합니다. 결과 표는 측정 파일에서 자동 생성하며 손으로 고치지 않습니다.",
+        text: "원 데이터의 감정 라벨은 GPT-4o가 붙였기 때문에, 그 라벨로만 평가하면 GPT-4o를 얼마나 잘 따라 하는지를 재게 됩니다. 그래서 test 분할에서 뽑은 280건에 사람이 다시 라벨을 붙인 평가셋을 따로 두고 두 라벨 기준 macro-F1을 모두 봅니다. 파싱 실패율, 처리량(건/s), p95 지연, 100만 건당 비용도 한 표에 놓고, 표는 측정 파일에서 자동 생성합니다.",
       },
       {
         heading: "상태",
-        text: "학습·병합·양자화·평가 코드를 작성하는 단계로, GPU 측정과 요금 측정은 아직입니다.",
+        text: "학습·병합·양자화·평가 코드와 테스트는 작성했고, GPU 실행은 아직 하지 않았습니다. 사람 검수 평가셋도 아직 라벨이 없습니다.",
       },
     ],
     draft: false,
@@ -250,14 +251,14 @@ const allProjects: Project[] = [
     period: "2026.10 – 진행 중",
     org: "개인 프로젝트 (저장소 비공개)",
     summary:
-      "EKS의 CPU 노드에 llama-server를 올리고, 스레드 수·CPU limit·HPA 설정에 따른 처리량과 지연, CFS 스로틀링을 재려는 실험입니다. 아직 AWS에서 실행하지 않았습니다.",
+      "GPU 없는 쿠버네티스(EKS)에서 4bit 소형 LLM을 llama.cpp 서버로 서빙하고, CPU limit·스레드 수·CFS 스로틀링이 처리량을 얼마나 깎는지와 HPA가 계단 부하에 어떻게 반응하는지 재려는 실험입니다. 아직 AWS에서 실행하지 않았습니다.",
     hero: "/projects/cpu-sllm-k8s.svg",
     color: "#0ea5e9",
     stack: ["Kubernetes (EKS)", "Helm", "llama.cpp (llama-server)", "k6", "Prometheus", "GitHub Actions OIDC", "Python"],
     body: [
       {
         heading: "설계",
-        text: "eksctl로 c7i.2xlarge 2대 노드 그룹의 클러스터를 만들고, 모델을 내장한 llama-server 이미지를 Helm 차트로 배포합니다. 생성 스레드 수를 CPU limit보다 크게 잡으면 CFS 스로틀링이 생긴다는 점을 차트 설정에 명시하고, 스레드 × CPU limit 격자와 HPA 동작을 따로 측정합니다.",
+        text: "Qwen2.5-1.5B-Instruct Q4_K_M GGUF(커밋 고정, sha256 확인)를 내장한 llama-server 이미지를 만들고, eksctl로 만든 c7i.2xlarge 노드 그룹 클러스터에 Helm 차트로 배포합니다. CPU limit을 스레드 수보다 낮게 주면 CFS 쿼터를 다 쓴 스레드가 주기 끝까지 멈추므로, 스레드 × CPU limit 격자와 HPA의 계단 부하 반응을 따로 잽니다. 배포는 GitHub Actions에서 OIDC 역할로 수동 실행하고, CI에서 pytest·helm lint·kubeconform·hadolint·actionlint를 돌립니다.",
       },
       {
         heading: "측정과 비용 통제",
