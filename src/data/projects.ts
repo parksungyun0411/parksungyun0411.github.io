@@ -19,7 +19,10 @@ export interface Project {
   role?: string;
   summary: string;
   hero?: string;
-  github?: string;
+  /** 저장소 주소. public이 true일 때만 링크로 렌더링 */
+  repo?: string;
+  /** 저장소 공개 여부. 비공개 저장소는 false로 두면 링크가 노출되지 않음 */
+  public?: boolean;
   external?: { label: string; url: string }[];
   stack: string[];
   body: { heading: string; text: string }[];
@@ -27,6 +30,8 @@ export interface Project {
   metrics?: ProjectMetric[];
   /** 수치의 출처·한계 설명. metrics 아래에 표시 */
   metricsNote?: string;
+  /** 화면 캡처. 상세 페이지에 이미지로 표시 */
+  screenshot?: { image: string; alt: string; note?: string };
   /** 아키텍처 다이어그램. 상세 페이지에 이미지로 표시 */
   architecture?: { image: string; alt: string; note?: string };
   /** 카드·상세 강조색 */
@@ -52,12 +57,10 @@ const allProjects: Project[] = [
     hero: "/projects/daker-evaluation.svg",
     color: "#6366f1",
     stack: [],
-    featured: true,
-    featuredOrder: 2,
     body: [
       {
         heading: "배경",
-        text: "평가 방법이 가중치 토글로 암묵적으로 정해지고, 평가 설정이 제출 단계에 묶여 있어 한 대회에서 평가를 여러 차수로 돌릴 수 없었습니다. 심사위원·제출자·참가자·대중의 평가가 한 점수에 섞여 주체별 영향력이 왜곡되는 문제도 있었습니다.",
+        text: "평가 방법 가중치 토글로 암묵적으로 정해지고, 평가 설정이 제출 단계에 묶여 있어 한 대회에서 평가를 여러 차수로 돌릴 수 없었습니다. 심사위원·제출자·참가자·대중의 평가가 한 점수에 섞여 주체별 영향력이 왜곡되는 문제도 있었습니다.",
       },
       {
         heading: "평가 시스템 재설계",
@@ -111,158 +114,187 @@ const allProjects: Project[] = [
       },
     ],
   },
-  // ── 개인 프로젝트 (진행 중) ─────────────────────────────────────────────
-  // 측정 결과가 아직 없는 프로젝트입니다. 수치·metrics를 넣지 않습니다.
-  // 사이트에서 숨기려면 해당 항목의 draft를 true로 바꾸면 됩니다.
-  {
-    slug: "minwon-rag",
-    title: "민원 질의응답 검색 실험 (minwon-rag)",
-    category: "personal",
-    badge: "2026 · 개인",
-    result: "진행 중",
-    period: "2026.10 – 진행 중",
-    org: "개인 프로젝트 (저장소 비공개)",
-    summary:
-      "국민권익위 민원정책 질의응답의 실제 시민 질의로 dense → 하이브리드 → 리랭커 검색 설정을 같은 조건에서 비교하는 실험입니다. 아직 측정 전입니다.",
-    hero: "/projects/minwon-rag.svg",
-    color: "#14b8a6",
-    stack: ["Python", "KURE-v1", "bge-m3", "Kiwi + BM25", "bge-reranker-v2-m3", "OpenSearch (선택)", "rag-eval-harness"],
-    body: [
-      {
-        heading: "설계",
-        text: "민원 질의는 시민이 쓴 구어체이고 기관 답변은 행정 문체라 같은 내용도 어휘가 많이 어긋납니다. 어휘 일치에 기대는 BM25와 의미 유사도에 기대는 dense 검색의 결과가 갈리는 데이터라 하이브리드·리랭커의 효과를 보기에 맞다고 판단했습니다. data.go.kr API로 민원을 수집해 기준일 이전 민원은 검색 코퍼스, 이후 민원 150건은 평가 질의로 나눕니다. 평가 질의는 LLM으로 합성하지 않고 실제 민원을 그대로 쓰며, 정답 라벨은 기관 답변에 붙은 인용 법령으로 자동 생성합니다(조문 일치는 강, 법령·기관 일치는 약).",
-      },
-      {
-        heading: "비교할 설정",
-        text: "Kiwi 형태소 분석 + BM25, dense(KURE-v1, bge-m3), 둘을 RRF로 묶은 하이브리드, 그 위에 bge-reranker-v2-m3로 상위 50건을 다시 정렬하는 설정까지 7종을 한 매트릭스에서 돌립니다. 기준 설정은 dense-kure이고, 지표는 hit@k·recall@k·MRR·nDCG·mAP에 Wilson 신뢰구간과 기준 대비 McNemar 검정, p95 지연을 붙입니다. 평가·통계·보고서는 rag-eval-harness를 의존성으로 씁니다.",
-      },
-      {
-        heading: "상태",
-        text: "수집기·전처리·검색·평가 코드와 단위 테스트까지 작성했습니다. 공공데이터포털 인증키를 받기 전이라 실데이터 수집과 측정은 아직 하지 않았고, 결과가 나오기 전에는 이 페이지에 수치를 싣지 않습니다.",
-      },
-    ],
-    draft: true,
-  },
+  // ── 개인 프로젝트 ───────────────────────────────────────────────────────
+  // 수치는 모두 각 저장소 reports/ 파일에서 옮겼고, metricsNote에 출처 파일을 적는다.
+  // 저장소가 비공개인 동안 repo 링크는 렌더링되지 않는다. 공개하면 public: true 로 바꾼다.
   {
     slug: "rag-eval-harness",
-    title: "검색·RAG 평가 하네스 (rag-eval-harness)",
+    title: "한국어 RAG 리더보드 순위 안정성",
     category: "personal",
     badge: "2026 · 개인",
-    result: "진행 중",
-    period: "2026.10 – 진행 중",
-    org: "개인 프로젝트 (저장소 비공개)",
+    result: "완료 · 공개 데이터 실측",
+    period: "2026.10",
+    org: "개인 프로젝트 (rag-eval-harness)",
     summary:
-      "도메인에 묶이지 않는 검색·RAG 평가 도구입니다. 랭킹 지표, 신뢰구간과 대응 검정, 실험 매트릭스, 실제 질의 대 합성 질의 골든셋 비교를 한 패키지로 묶습니다.",
-    hero: "/projects/rag-eval-harness.svg",
-    color: "#8b5cf6",
-    stack: ["Python", "NumPy", "SciPy", "matplotlib", "Anthropic / OpenAI 호환 API", "pytest", "GitHub Actions"],
+      "공개 한국어 RAG 평가셋의 시스템 23개 × 질문 300개 정답 여부를 부트스트랩해, 질문 수에 따라 리더보드 순위가 얼마나 흔들리는지 측정했습니다. 300문항으로는 1위와 2위를 가를 수 없었습니다.",
+    hero: "/projects/arch/rag-eval-harness.png",
+    repo: "https://github.com/parksungyun0411/rag-eval-harness",
+    public: false,
+    color: "#16a34a",
+    stack: ["Python", "NumPy", "SciPy", "Matplotlib", "FastAPI", "JavaScript", "pytest", "GitHub Actions"],
+    featured: true,
+    featuredOrder: 1,
     body: [
       {
-        heading: "설계",
-        text: "골든셋 × 검색 설정 조합을 모두 돌려 질의 단위 결과를 남기고, 평균·신뢰구간·검정은 같은 원자료에서 다시 계산합니다. 비율 지표에는 Wilson 구간을 쓰고, 두 설정의 같은 질의 성공/실패는 McNemar 검정으로 비교합니다(불일치 쌍 25 미만이면 정확 이항검정).",
+        heading: "질문",
+        text: "리더보드 표의 숫자 차이만으로는 그 차이가 질문을 다시 뽑아도 유지될지 알 수 없습니다. 같은 질문으로 두 시스템을 채점하면 한쪽만 맞힌 질문의 비율(불일치율)이 순위의 흔들림을 결정하는데, 리더보드에는 이 값이 보이지 않습니다. 이 프로젝트는 그 값을 계산해 \"이 두 시스템을 가르려면 질문이 몇 개 필요한가\"에 답합니다.",
       },
       {
-        heading: "골든셋 비교와 LLM 판정",
-        text: "같은 검색 설정들을 실제 시민 질의 골든셋과 LLM이 합성한 질의 골든셋으로 각각 재고, 점수 차이와 설정 순위 상관(Kendall tau-b, Spearman rho)을 계산합니다. 합성 골든셋이 점수를 부풀리더라도 설정 순위가 같다면 설정을 고르는 용도로는 쓸 수 있고, 순위까지 바뀐다면 합성 골든셋으로 고른 설정이 실제 질의에서는 최선이 아닐 수 있다는 질문입니다. 답변 표본은 LLM이 근거성·정확성·유용성을 1~5점으로 판정하고, 파싱되지 않은 판정은 집계에서 빼고 따로 남깁니다.",
+        heading: "방법",
+        text: "allganize/RAG-Evaluation-Dataset-KO(고정 리비전, SHA-256 확인)에 담긴 시스템 23개의 질문 300개(도메인 5개 × 60개)별 정답 여부로 정답 행렬을 만들고, 질문 집합을 10,000회 복원추출해 질문 수별 Kendall tau, 1위 유지 확률, top-k 집합 유지 확률을 계산했습니다. 동점은 유지로 세지 않았습니다. 바로 이웃한 순위 쌍마다 양측 95%로 가르는 데 필요한 질문 수를 시뮬레이션·정확해(삼항 분포의 합)·정규 근사로 각각 구해 서로 대조했고, 시뮬레이션과 정확해의 최대 절대 차는 264개 지점에서 0.016이었습니다.",
       },
       {
-        heading: "상태",
-        text: "패키지 코드와 단위 테스트(랭킹 지표는 손으로 계산한 값과 대조)까지 작성했습니다. 공공데이터 인증키와 LLM 키를 받기 전이라 측정은 아직 하지 않았습니다.",
+        heading: "결과",
+        text: "300문항 기준 1위는 254/300, 2위는 251/300으로 3문항 차이이고 불일치율은 0.050입니다. 같은 크기의 평가셋을 다시 뽑으면 1위가 유지되는 비율은 0.744이고, 이 두 시스템을 정확해 기준 양측 95%로 가르려면 2,000문항이 필요합니다(300을 넘는 값은 외삽). 인접 순위 쌍 22개 중 300문항 안에서 갈리는 쌍은 3개였습니다. 질문 수·정확도 차이·불일치율로 역전 확률을 계산하는 함수와, 리더보드·안정성 곡선·계산기를 보여 주는 정적 웹 화면도 만들었습니다.",
+      },
+      {
+        heading: "한계",
+        text: "방법은 정보검색의 topic set size 연구에서 쓰이는 표준 방법이고, 새로 한 것은 한국어 RAG 리더보드 데이터에 적용한 측정과 계산기입니다. 정답 여부는 데이터셋 작성자가 LLM 평가기 4종의 투표로 정한 값이라 라벨 오류의 불확실성은 반영하지 못합니다. 시스템 23개는 한 회사가 만든 벤치마크에서 나왔고 그중 10개는 같은 플랫폼의 생성 모델만 바꾼 변형이라 다른 리더보드에 그대로 일반화할 수 없습니다. 실제 질의 대 합성 질의 골든셋 비교(보조 실험)는 아직 측정하지 않았고, 웹 화면은 로컬에서만 실행했으며 배포하지 않았습니다.",
       },
     ],
-    draft: false,
-  },
-  {
-    slug: "vendor-check-agent",
-    title: "공공 API 실패 주입 거래처 점검 에이전트 (vendor-check-agent)",
-    category: "personal",
-    badge: "2026 · 개인",
-    result: "진행 중",
-    period: "2026.10 – 진행 중",
-    org: "개인 프로젝트 (저장소 비공개)",
-    summary:
-      "국세청·금융위·OpenDART 공공 API에 실패를 일부러 주입해, 거래처 점검 에이전트가 복구 전략별로 얼마나 회복하는지와 실패를 정상처럼 보고하는 비율을 재려는 실험입니다. 아직 측정 전입니다.",
-    hero: "/projects/vendor-check-agent.svg",
-    color: "#f59e0b",
-    stack: ["Python", "LangGraph", "MCP", "httpx", "Starlette"],
-    body: [
-      {
-        heading: "설계",
-        text: "기관별 툴(국세청·금융위·OpenDART 클라이언트)을 MCP 서버로 노출하고, 툴과 기관 API 사이에 실패 주입 프록시를 둡니다. 모든 툴은 예외를 던지지 않고 성공 또는 분류된 오류를 돌려줘, 실패 유형이 MCP 경계 너머 에이전트까지 보존되게 했습니다.",
-      },
-      {
-        heading: "주입하는 실패",
-        text: "타임아웃, 5xx, HTTP 200에 오류 본문, 일일 한도 초과, 본문 절단, 필수 필드 누락의 여섯 가지입니다. 복구 전략은 none·retry(지수 백오프)·fallback(다른 기관 값으로 대체)·checkpoint(한도 초과 시 멈췄다가 다음 날 재개) 네 가지로, 효과를 전략 하나에 귀속시키려고 서로 섞지 않습니다.",
-      },
-      {
-        heading: "에이전트 흐름",
-        text: "LangGraph로 법인 후보를 찾고, 동명 법인이 둘 이상이면 사람이 법인등록번호를 고르도록 멈춥니다(HITL interrupt). 국세청과 DART 조회는 병렬로 돌리고, 비상장이면서 DART 고유번호가 없는 법인은 DART를 부르지 않습니다. 체크포인트를 SQLite에 남겨, 재개할 때 이미 끝난 기관은 다시 부르지 않습니다.",
-      },
-      {
-        heading: "상태",
-        text: "가장 비싼 사고는 툴이 실패했는데 점검 결과가 정상으로 나가는 경우라고 보고 그 비율을 따로 잽니다. 고정 순서 파이프라인(대조군)과 에이전트는 같은 툴과 복구 코드를 써서 차이가 그래프 구조에서만 나도록 했습니다. 코드와 테스트(합성 데이터로 응답하는 가짜 업스트림)는 작성했고, 실험 측정은 아직 하지 않았습니다.",
-      },
+    metrics: [
+      { label: "데이터", value: "시스템 23 × 질문 300" },
+      { label: "복원추출", value: "10,000회 (seed 0)" },
+      { label: "n=300 Kendall tau-b [95%]", value: "0.930 [0.863, 0.974]" },
+      { label: "n=300 1위 유지 확률 [95%]", value: "0.744 [0.736, 0.753]" },
+      { label: "1-2위를 가르는 질문 수 (정확해)", value: "2,000 (외삽)" },
+      { label: "300문항 안에서 갈리는 인접 쌍", value: "3 / 22" },
     ],
-    draft: false,
+    metricsNote: "출처: rag-eval-harness 저장소 reports/REPORT.md (원자료 reports/rank_stability/curve_overall.csv, adjacent_pairs.csv, approx_check.csv, leaderboard.csv).",
+    screenshot: {
+      image: "/projects/screens/rag-eval-harness-demo.png",
+      alt: "rag-eval-harness 웹 화면 — 리더보드, 질문 수에 따른 순위 안정성 곡선, 순위 역전 확률 계산기",
+      note: "로컬에서 실행한 정적 웹 화면입니다. 배포하지 않았습니다.",
+    },
   },
   {
-    slug: "jeju-emotion-lora",
-    title: "제주어 감정 분류 LoRA 소형 LLM 비교 (jeju-emotion-lora)",
+    slug: "airgap-egress-audit",
+    title: "폐쇄망 반입 후 외부 호출 감사",
     category: "personal",
     badge: "2026 · 개인",
-    result: "진행 중",
-    period: "2026.10 – 진행 중",
-    org: "개인 프로젝트 (저장소 비공개)",
+    result: "로컬 kind 실측 · EKS 미실행",
+    period: "2026.10",
+    org: "개인 프로젝트 (airgap-egress-audit)",
     summary:
-      "졸업 프로젝트의 KoELECTRA 앙상블을 기준으로, LoRA로 미세조정한 소형 LLM 세 종의 분류 성능과 AWQ 4bit·vLLM 서빙 시 건당 비용을 비교하려는 후속 실험입니다. 아직 측정 전입니다.",
-    hero: "/projects/jeju-emotion-lora.svg",
-    color: "#ea580c",
-    stack: ["Python", "PyTorch", "Transformers", "PEFT", "TRL", "LLM Compressor", "vLLM"],
-    body: [
-      {
-        heading: "설계",
-        text: "졸업 프로젝트와 같은 데이터·7:1:2 층화 분할·seed 42에서 kanana-1.5-2.1b, Qwen3-4B, Midm-2.0-Mini 세 모델을 제로샷, 클래스당 1개 퓨샷, LoRA bf16, LoRA AWQ 4bit로 나눠 붙이고, 기존 KoELECTRA + Dual KR-BERT 앙상블과 비교합니다. 후보 모델은 상업 이용이 가능한 라이선스만 골랐고, 비상업 라이선스인 EXAONE 4.0 1.2B는 제외했습니다.",
-
-      },
-      {
-        heading: "보는 지표",
-        text: "원 데이터의 감정 라벨은 GPT-4o가 붙였기 때문에, 그 라벨로만 평가하면 GPT-4o를 얼마나 잘 따라 하는지를 재게 됩니다. 그래서 test 분할에서 뽑은 280건에 사람이 다시 라벨을 붙인 평가셋을 따로 두고 두 라벨 기준 macro-F1을 모두 봅니다. 파싱 실패율, 처리량(건/s), p95 지연, 100만 건당 비용도 한 표에 놓고, 표는 측정 파일에서 자동 생성합니다.",
-      },
-      {
-        heading: "상태",
-        text: "학습·병합·양자화·평가 코드와 테스트는 작성했고, GPU 실행은 아직 하지 않았습니다. 사람 검수 평가셋도 아직 라벨이 없습니다.",
-      },
-    ],
-    draft: true,
-  },
-  {
-    slug: "cpu-sllm-k8s",
-    title: "CPU 쿠버네티스 위 소형 LLM 서빙 측정 (cpu-sllm-k8s)",
-    category: "personal",
-    badge: "2026 · 개인",
-    result: "진행 중",
-    period: "2026.10 – 진행 중",
-    org: "개인 프로젝트 (저장소 비공개)",
-    summary:
-      "GPU 없는 쿠버네티스(EKS)에서 4bit 소형 LLM을 llama.cpp 서버로 서빙하고, CPU limit·스레드 수·CFS 스로틀링이 처리량을 얼마나 깎는지와 HPA가 계단 부하에 어떻게 반응하는지 재려는 실험입니다. 아직 AWS에서 실행하지 않았습니다.",
-    hero: "/projects/cpu-sllm-k8s.svg",
+      "한국어 소형 LLM과 RAG 스택을 egress가 막힌 쿠버네티스 네임스페이스에 설치하고, 설치·기동·첫 요청·유휴 단계에서 밖으로 나가려는 시도를 패킷으로 기록한 뒤 \"외부 호출 0건\"을 회귀 게이트로 고정했습니다. 결과는 로컬 kind(macOS·colima)에서 낸 것입니다.",
+    hero: "/projects/arch/airgap-egress-audit.png",
+    repo: "https://github.com/parksungyun0411/airgap-egress-audit",
+    public: false,
     color: "#0ea5e9",
-    stack: ["Kubernetes (EKS)", "Helm", "llama.cpp (llama-server)", "k6", "Prometheus", "GitHub Actions OIDC", "Python"],
+    stack: ["kind", "Kubernetes", "Helm", "tcpdump", "CoreDNS", "llama.cpp", "TEI", "Qdrant", "FastAPI", "Python", "GitHub Actions"],
+    featured: true,
+    featuredOrder: 2,
+    body: [
+      {
+        heading: "질문",
+        text: "폐쇄망 반입은 보통 필요한 이미지와 모델 파일을 모두 들고 들어가면 끝난다고 가정합니다. 이 프로젝트는 이미지와 모델을 클러스터에 미리 넣어 둔 상태에서도 구성 요소가 밖으로 나가려 하는지를 문서가 아니라 패킷으로 확인합니다.",
+      },
+      {
+        heading: "방법",
+        text: "llama.cpp llama-server(kanana-1.5-2.1b Q4_K_M), Text Embeddings Inference, Qdrant, FastAPI RAG 앱을 한 Helm 차트로 설치하고, 네임스페이스에 egress 기본 거부 NetworkPolicy를 걸었습니다. 클러스터 밖 컨테이너가 kind 노드의 네트워크 네임스페이스에서 tcpdump로 TCP SYN과 UDP를 기록하고, CoreDNS 질의 로그와 파드 IP 기록으로 시도를 구성 요소·단계·목적지에 귀속합니다. 기본 설정(before), 완화 설정(after), 일부러 누출을 넣은 설정(leak)을 각각 새 클러스터에서 감사했습니다.",
+      },
+      {
+        heading: "결과",
+        text: "before에서 임베딩 서버(TEI)는 huggingface.co로 DNS 질의 24회와 TCP 443 SYN 109회를, Qdrant는 telemetry.qdrant.io로 DNS 질의 8회와 SYN 1회를 시도했고, 두 구성 요소 모두 SYN 1회씩은 노드 밖으로 나갔습니다. TEI에 로컬 스냅숏 경로를 지정하고 Qdrant 사용 통계를 끈 after에서는 시도가 관찰되지 않아 게이트가 FAIL(6건)에서 PASS(0건)로 바뀌었고, Running에서 전체 Ready까지 걸린 시간은 364초에서 5초로 줄었습니다. leak 설정에서는 주입한 호출(DNS 6회, SYN 10회)을 기록하고 게이트가 3건으로 실패했습니다. 정책 자체 점검에서는 기본 거부 네임스페이스에서도 파드 기동 직후의 연결은 통과하고 15초 뒤의 연결은 막혀, 이 환경에서는 차단을 정책이 아니라 구성 요소 설정으로 했습니다.",
+      },
+      {
+        heading: "한계",
+        text: "모든 결과는 인터넷에 연결된 macOS의 colima VM 안 kind 클러스터에서 before·after·leak 각 1회 실행한 것이며 실제 폐쇄망이 아닙니다. EKS 변형은 작성만 했고 실행하지 않았습니다. 유휴 600초 동안 관찰되지 않았다는 것은 호출이 없다는 증명이 아니고, 캡처는 IPv4의 TCP SYN과 UDP만 봅니다. 시험한 구성 요소 버전 밖으로는 일반화할 수 없습니다.",
+      },
+    ],
+    metrics: [
+      { label: "TEI 외부 시도 (before)", value: "DNS 24 · SYN 109" },
+      { label: "Qdrant 외부 시도 (before)", value: "DNS 8 · SYN 1" },
+      { label: "노드 밖으로 나간 SYN (before)", value: "2" },
+      { label: "게이트 before → after", value: "FAIL 6건 → PASS 0건" },
+      { label: "Running → 전체 Ready", value: "364초 → 5초" },
+      { label: "누출 주입 (leak) 게이트", value: "FAIL 3건" },
+    ],
+    metricsNote: "출처: airgap-egress-audit 저장소 reports/kind-20261003/REPORT.md (정책 자체 점검은 같은 폴더의 before·after·leak/policy-check.txt). 로컬 kind on macOS(colima), 유휴 관찰 600초, 각 설정 1회 실행. EKS는 실행하지 않았습니다.",
+  },
+  {
+    slug: "k-mcp-qa",
+    title: "한국 공공데이터 MCP 서버 공통 시험",
+    category: "personal",
+    badge: "2026 · 개인",
+    result: "키 없는 조건 실측",
+    period: "2026.10",
+    org: "개인 프로젝트 (k-mcp-qa)",
+    summary:
+      "공공기관 API를 감싸는 한국 MCP 서버 10개를 커밋 SHA로 고정해 격리 환경에서 설치·실행하고, 같은 시험을 돌려 관찰한 동작을 유형별로 기록했습니다. 서버의 품질 순위가 아니라 2026-10-03 고정 커밋에서 관찰한 동작입니다.",
+    hero: "/projects/arch/k-mcp-qa.png",
+    repo: "https://github.com/parksungyun0411/k-mcp-qa",
+    public: false,
+    color: "#8b5cf6",
+    stack: ["Python", "MCP", "JSON Schema", "MCP conformance", "mcp-audit", "macOS sandbox-exec", "pytest", "GitHub Actions"],
+    featured: true,
+    featuredOrder: 3,
+    body: [
+      {
+        heading: "시험 항목",
+        text: "설치·기동, 프로토콜 적합성(initialize, tools/list, 응답 스키마, 알 수 없는 메서드·툴, 제한 시간), 선언된 입력 스키마와 실제 동작의 차이, 기관 API 오류를 어떻게 돌려주는지를 봅니다. 실제 API 키는 쓰지 않고 키 변수에 자리 표시자를 넣었기 때문에, 기관 API를 부르는 호출은 인증 오류를 받습니다. 이때 서버가 오류를 오류로 알려 주는지가 시험 항목 중 하나입니다.",
+      },
+      {
+        heading: "방법",
+        text: "서버마다 임시 HOME과 비운 환경 변수, macOS sandbox-exec로 격리해 실행하고, SDK를 거치지 않는 stdio JSON-RPC 클라이언트로 송수신 줄을 그대로 기록했습니다. 응답은 MCP 공식 스키마(2025-11-25)로 검증하고, 툴마다 필수 인자 누락·타입 오류·스키마를 만족하는 입력으로 호출했습니다. 공식 conformance 시나리오 3개와 mcp-audit도 함께 돌렸습니다. 관찰마다 입력·응답·재현 명령을 남기고 19개 유형으로 분류합니다.",
+      },
+      {
+        heading: "관찰",
+        text: "변형 1개를 포함한 11개 실행에서 설치는 모두 성공했고, 자리 표시자 키로 initialize에 응답한 실행은 10개, 그중 공식 conformance 세 시나리오를 모두 통과한 실행은 9개였습니다. 알 수 없는 툴 호출을 JSON-RPC 오류가 아닌 isError 결과로 답한 실행이 8개로 가장 많았는데, 같은 SDK 계열에서 공통으로 나타나 SDK 동작일 수 있습니다. 기관 API 오류를 isError 없는 결과로 돌려준 실행은 5개였습니다. 각 관찰에 대한 이슈 초안은 만들었지만 업스트림에 올리지 않았습니다.",
+      },
+      {
+        heading: "한계",
+        text: "표본은 awesome-mcp-korea에서 고른 10개(+변형 1)로 한국 공공데이터 MCP 서버 전체를 대표하지 않습니다. 실행은 하루, 서버마다 고정 커밋 하나입니다. 키 없는 조건만 측정해, 오류 처리 관찰은 유효하지 않은 키에서의 동작이며 정상 키에서는 나타나지 않을 수 있습니다. MCP 응답과 기관 API 직접 호출의 일치 검사는 구현했지만 키가 필요해 측정 전입니다. 관찰 건수는 툴 수에 비례하므로 서버끼리 직접 비교할 수 없습니다.",
+      },
+    ],
+    metrics: [
+      { label: "시험한 서버", value: "10 (+ 변형 1)" },
+      { label: "시험하지 않은 서버", value: "2" },
+      { label: "설치 성공", value: "11 / 11" },
+      { label: "자리 표시자 키로 initialize 응답", value: "10 / 11" },
+      { label: "공식 conformance 3개 모두 통과", value: "9 / 10" },
+      { label: "직접 호출 일치", value: "측정 전" },
+    ],
+    metricsNote: "출처: k-mcp-qa 저장소 reports/RESULTS.md (서버별 요약·관찰 유형별 건수·시험하지 않은 서버 표). 해당 실행 수는 관찰 유형별 건수 표에서 1건 이상인 실행을 센 값입니다. 2026-10-03 실행, 키 없음(자리 표시자) 조건.",
+  },
+  {
+    slug: "ko-judge-lora",
+    title: "한국어 LLM 평가자 LoRA",
+    category: "personal",
+    badge: "2026 · 개인",
+    result: "진행 중",
+    period: "2026.10 – 진행 중",
+    org: "개인 프로젝트 (ko-judge-lora)",
+    summary:
+      "한국어 응답을 1~5점으로 채점하는 소형 LLM 평가자를 사람 점수로 LoRA 학습하고, 사람 점수와의 일치와 모델 순위 재현을 재려는 프로젝트입니다. 데이터 프로파일만 실측했고 모델 학습·서빙은 실행 전입니다.",
+    hero: "/projects/arch/ko-judge-lora.png",
+    repo: "https://github.com/parksungyun0411/ko-judge-lora",
+    public: false,
+    color: "#f59e0b",
+    stack: ["Python", "PyTorch", "Transformers", "PEFT", "TRL", "llm-compressor", "vLLM", "pandas", "SciPy"],
     body: [
       {
         heading: "설계",
-        text: "Qwen2.5-1.5B-Instruct Q4_K_M GGUF(커밋 고정, sha256 확인)를 내장한 llama-server 이미지를 만들고, eksctl로 만든 c7i.2xlarge 노드 그룹 클러스터에 Helm 차트로 배포합니다. CPU limit을 스레드 수보다 낮게 주면 CFS 쿼터를 다 쓴 스레드가 주기 끝까지 멈추므로, 스레드 × CPU limit 격자와 HPA의 계단 부하 반응을 따로 잽니다. 배포는 GitHub Actions에서 OIDC 역할로 수동 실행하고, CI에서 pytest·helm lint·kubeconform·hadolint·actionlint를 돌립니다.",
+        text: "한국어 사람 평가 데이터셋 KUDGE(Son et al., 2024)를 씁니다. 학습용 분할이 없는 평가 전용 데이터라, 질문 5-fold와 평가 대상 모델 8개 보류를 한 번의 학습에서 함께 만족시키는 out-of-fold 설계로 질문과 모델 두 방향의 누수를 막았습니다. 판정 모델은 상업 이용이 가능한 라이선스의 Qwen3-4B(주)와 kanana-1.5-2.1b(보조)이고, 학습한 평가자를 AWQ 4bit로 양자화해 vLLM으로 서빙하며 양자화 전후 품질과 100만 건당 비용을 비교할 계획입니다.",
       },
       {
-        heading: "측정과 비용 통제",
-        text: "k6로 단계형·고정 부하를 걸고, kube-prometheus-stack과 kubectl에서 레플리카·스로틀 지표를 수집해 리포트를 만듭니다. NAT 게이트웨이와 LoadBalancer는 일부러 만들지 않고, 실행 전에 공식 요금표로 비용 상한을 잡아 AWS Budgets 알림을 거는 절차를 문서로 두었습니다.",
+        heading: "데이터 프로파일 (실측)",
+        text: "pointwise 응답 2,506건, 질문 87개, 평가 대상 모델 31개입니다. 두 평가자의 점수는 47.92%가 완전히 일치하고 83.84%가 1점 이내이며 피어슨 r은 0.640입니다. 이 사람 간 일치를 판정 모델의 상한으로 둡니다. 논문 지표인 off-by-0.5 정확도는 항상 1점을 주는 상수 판정도 43.10%가 나오므로, 피어슨 r과 모델 순위의 Kendall τ를 함께 봅니다.",
       },
       {
-        heading: "상태",
-        text: "인프라·차트·부하 스크립트·수집기를 작성한 단계로, 아직 클러스터를 만들어 측정하지 않았습니다.",
+        heading: "상태와 한계",
+        text: "학습·서빙이 필요한 단계는 코드와 테스트만 있고 GPU에서 실행하지 않아 모델 결과는 없습니다. 질문이 87개뿐이라 사람 순위조차 87개 전부를 써야 τ의 2.5 백분위가 0.9를 넘으므로, 판정 모델 간 τ 차이가 작으면 구분할 수 없습니다.",
       },
     ],
-    draft: true,
+    metrics: [
+      { label: "응답 / 질문 / 모델", value: "2,506 / 87 / 31" },
+      { label: "평가자 간 완전 일치", value: "47.92%" },
+      { label: "평가자 간 1점 이내", value: "83.84%" },
+      { label: "평가자 간 피어슨 r", value: "0.640" },
+      { label: "상수(1점) 판정 off-by-0.5", value: "43.10%" },
+      { label: "평가자1 대 평가자2 순위 τ", value: "0.901" },
+    ],
+    metricsNote: "출처: ko-judge-lora 저장소 reports/dataset_profile.md (KUDGE 고정 커밋 09e1316, 모델 없이 데이터만으로 계산). 판정 모델 결과는 측정 전입니다.",
   },
   {
     slug: "nerdmath",
@@ -277,8 +309,6 @@ const allProjects: Project[] = [
     hero: "/projects/nerdmath.svg",
     color: "#0ea5e9",
     stack: ["FastAPI", "LangChain", "LangGraph", "Graph-RAG", "Mathpix OCR"],
-    featured: true,
-    featuredOrder: 3,
     body: [
       {
         heading: "개요",
@@ -305,11 +335,12 @@ const allProjects: Project[] = [
     summary:
       "제주어/표준어 병렬 코퍼스를 GPT-4o로 7감정 라벨링해 학습 데이터를 직접 만들고, 고전 ML 베이스라인에서 Dual-Gated KR-BERT + KoELECTRA 앙상블까지 7단계로 개선한 방언 감정 분류 프로젝트입니다.",
     hero: "/projects/jeju-emotion.svg",
-    github: "https://github.com/parksungyun0411/jeju-emotion-analysis",
+    repo: "https://github.com/parksungyun0411/jeju-emotion-analysis",
+    public: true,
     color: "#f97316",
     stack: ["Python", "PyTorch", "HuggingFace Transformers", "scikit-learn", "KR-BERT", "KoELECTRA", "OpenAI GPT-4o API", "pandas"],
     featured: true,
-    featuredOrder: 1,
+    featuredOrder: 4,
     body: [
       {
         heading: "배경",
@@ -356,11 +387,10 @@ const allProjects: Project[] = [
     summary:
       "최대 8명이 동시 접속하는 TCP 소켓 기반 라이어 게임입니다. 접속 처리와 게임 진행이 서로 막지 않도록 서버 스레드를 분리하고 게임 로직을 구현했습니다.",
     hero: "/projects/liar-game.svg",
-    github: "https://github.com/parksungyun0411/liar-game",
+    repo: "https://github.com/parksungyun0411/liar-game",
+    public: true,
     color: "#10b981",
     stack: ["Java", "Swing", "Socket", "Thread", "Gradle"],
-    featured: true,
-    featuredOrder: 4,
     body: [
       {
         heading: "배경",
@@ -386,7 +416,8 @@ const allProjects: Project[] = [
     summary:
       "C 자료구조부터 C++ DBMS 내부 구조, R 다변량 분석까지 학부 과정의 과제·실습 코드를 학기별로 정리한 저장소입니다.",
     hero: "/projects/coursework.svg",
-    github: "https://github.com/parksungyun0411/university-coursework",
+    repo: "https://github.com/parksungyun0411/university-coursework",
+    public: true,
     color: "#64748b",
     stack: ["C", "C++", "Java", "Python", "R"],
     body: [

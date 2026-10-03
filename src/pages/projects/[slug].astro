@@ -54,7 +54,9 @@ const categoryLabel: Record<string, string> = {
             height="200"
             loading="eager"
             decoding="async"
-            class="w-full max-h-[280px] rounded-xl object-cover"
+            class={project.hero.endsWith(".png")
+              ? "w-full h-auto rounded-xl border border-base-300"
+              : "w-full max-h-[280px] rounded-xl object-cover"}
           />
         </div>
       )
@@ -110,6 +112,27 @@ const categoryLabel: Record<string, string> = {
         />
         {project.architecture.note && (
           <p class="text-sm opacity-70 mt-2">{project.architecture.note}</p>
+        )}
+      </div>
+    )
+  }
+
+  {
+    project.screenshot && (
+      <div class="mb-8">
+        <h2 class="text-xl font-bold mb-3 flex items-center gap-2">
+          <span class="inline-block w-1 h-5 rounded" style={`background:${accent};`}></span>
+          화면
+        </h2>
+        <img
+          src={project.screenshot.image}
+          alt={project.screenshot.alt}
+          loading="lazy"
+          decoding="async"
+          class="w-full rounded-xl border border-base-300"
+        />
+        {project.screenshot.note && (
+          <p class="text-sm opacity-70 mt-2">{project.screenshot.note}</p>
         )}
       </div>
     )
@@ -182,9 +205,9 @@ const categoryLabel: Record<string, string> = {
 
   <div class="flex flex-wrap gap-3 mt-8 mb-4">
     {
-      project.github && (
+      project.public && project.repo && (
         <a
-          href={project.github}
+          href={project.repo}
           target="_blank"
           rel="noopener noreferrer"
           class="btn btn-sm md:btn-md"

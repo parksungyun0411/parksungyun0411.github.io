@@ -10,6 +10,8 @@ const {
   color,
 } = Astro.props;
 const accent = color ?? "rgba(99, 102, 241, 0.4)";
+// 다이어그램 PNG는 잘리지 않게 contain, 일러스트 SVG는 cover
+const heroFit = hero?.endsWith(".png") ? "object-contain bg-base-200" : "object-cover";
 ---
 
 <div
@@ -33,7 +35,7 @@ const accent = color ?? "rgba(99, 102, 241, 0.4)";
               alt={title}
               loading="lazy"
               decoding="async"
-              class="h-32 w-full md:h-full md:max-h-[10rem] rounded-lg object-cover"
+              class={`h-32 w-full md:h-full md:max-h-[10rem] rounded-lg ${heroFit}`}
             />
           </div>
         )
