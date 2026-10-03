@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- public/projects/arch/jeju-architecture.png 생성 템플릿.
+     chrome --headless=new --window-size=1180,400 --force-device-scale-factor=2 \
+       --virtual-time-budget=6000 --screenshot=public/projects/arch/jeju-architecture.png \
+       docs/diagrams/jeju-architecture.html
+     구조 출처: jeju-emotion-analysis/README.md "최종 아키텍처" -->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { overflow: hidden; }
+  body {
+    width: 1180px; height: 400px;
+    font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+    background: #fff; color: #1f2937; padding: 40px 48px; word-break: keep-all;
+  }
+  h1 { font-size: 26px; font-weight: 800; }
+  .sub { margin-top: 6px; font-size: 14.5px; color: #6b7280; }
+  .grid { margin-top: 28px; display: grid; grid-template-columns: 170px 40px 330px 40px 250px 40px 190px; align-items: center; row-gap: 22px; }
+  .box { border: 1px solid #e5e7eb; background: #f9fafb; border-radius: 12px; padding: 12px 14px; }
+  .box .t { font-size: 15px; font-weight: 700; color: #9a3412; }
+  .box .d { margin-top: 3px; font-size: 12.5px; color: #6b7280; line-height: 1.55; }
+  .in { background: #fff7ed; border-color: #fed7aa; }
+  .accent { background: #ea580c; border-color: #ea580c; }
+  .accent .t { color: #fff; } .accent .d { color: #ffedd5; }
+  .arrow { text-align: center; color: #9ca3af; font-size: 18px; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .span2 { grid-row: span 2; }
+  .foot { margin-top: 26px; padding-top: 12px; border-top: 1px solid #e5e7eb; font-size: 12.5px; color: #6b7280; }
+</style>
+</head>
+<body>
+  <h1>최종 모델 구조 — Dual-Gated KR-BERT + KoELECTRA 앙상블</h1>
+  <p class="sub">병렬 코퍼스의 표준어 문장을 보조 입력으로 쓰는 브랜치와, 제주어만 받는 브랜치의 확률을 가중 결합합니다.</p>
+  <div class="grid">
+    <div class="box in"><div class="t">제주어 문장</div><div class="d">단독 입력</div></div>
+    <div class="arrow">→</div>
+    <div class="box"><div class="t">Branch 1 · KoELECTRA</div><div class="d">제주어만 인코딩 → Classifier(7)</div></div>
+    <div class="arrow">→</div>
+    <div class="box"><div class="t mono">p_single</div><div class="d">7감정 확률</div></div>
+    <div class="arrow span2">→</div>
+    <div class="box accent span2"><div class="t">앙상블</div><div class="d mono">p = α·p_dual + (1−α)·p_single</div><div class="d">α는 그리드 서치로 탐색</div></div>
+
+    <div class="box in"><div class="t">제주어 + 표준어</div><div class="d">병렬 문장 쌍</div></div>
+    <div class="arrow">→</div>
+    <div class="box"><div class="t">Branch 2 · Dual-Gated KR-BERT</div><div class="d">공유 KR-BERT → h_jeju, h_std<br><span class="mono">g = σ(W·[h_jeju; h_std] + b)</span><br><span class="mono">h = g·h_jeju + (1−g)·h_std</span> → Linear(7)</div></div>
+    <div class="arrow">→</div>
+    <div class="box"><div class="t mono">p_dual</div><div class="d">7감정 확률</div></div>
+  </div>
+  <p class="foot">출처: jeju-emotion-analysis 저장소 README의 최종 아키텍처. 7감정: 중립·기쁨·슬픔·분노·놀람·공포·혐오.</p>
+</body>
+</html>

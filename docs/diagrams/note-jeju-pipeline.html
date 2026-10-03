@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- public/notes/jeju-pipeline.png 생성 템플릿.
+     chrome --headless=new --window-size=1180,540 --force-device-scale-factor=2 \
+       --virtual-time-budget=6000 --screenshot=public/notes/jeju-pipeline.png \
+       docs/diagrams/note-jeju-pipeline.html
+     수치 출처: jeju-emotion-analysis/README.md (최종 발표 실험 기준) -->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  html, body { overflow: hidden; }
+  body {
+    width: 1180px; height: 540px;
+    font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+    background: #fff; color: #1f2937;
+    padding: 44px 48px 36px;
+    word-break: keep-all;
+  }
+  h1 { font-size: 28px; font-weight: 800; }
+  .sub { margin-top: 8px; font-size: 15px; color: #6b7280; }
+  .chart { margin-top: 30px; display: grid; gap: 10px; }
+  .row { display: grid; grid-template-columns: 300px 1fr 70px; align-items: center; gap: 16px; }
+  .label { font-size: 15px; font-weight: 600; }
+  .label small { display: block; font-weight: 400; font-size: 12.5px; color: #6b7280; margin-top: 2px; }
+  .track { height: 26px; background: #f3f4f6; border-radius: 6px; position: relative; overflow: hidden; }
+  .bar { height: 100%; background: #fdba74; border-radius: 6px; }
+  .bar.final { background: #ea580c; }
+  .val { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 15px; font-weight: 600; text-align: right; }
+  .ref { position: absolute; top: 0; bottom: 0; border-left: 2px dashed #9ca3af; }
+  .foot { margin-top: 26px; padding-top: 14px; border-top: 1px solid #e5e7eb; font-size: 12.5px; color: #6b7280; line-height: 1.6; }
+</style>
+</head>
+<body>
+  <h1>제주어 감정 분류 — 7단계 개선과 단계별 Test F1-Macro</h1>
+  <p class="sub">모든 단계가 seed 42로 고정한 같은 Stratified 7:1:2 분할의 test set(25,463행)을 사용합니다. 점선은 고전 ML 최고값 0.2957입니다.</p>
+  <div class="chart">
+    <div class="row"><div class="label">1 · KR-BERT 베이스라인<small>전처리 없음</small></div><div class="track"><div class="bar" style="width:47.33%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.4733</div></div>
+    <div class="row"><div class="label">2 · 데이터 밸런싱<small>오버샘플링</small></div><div class="track"><div class="bar" style="width:58.33%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.5833</div></div>
+    <div class="row"><div class="label">3 · Dual-Gated KR-BERT<small>제주어/표준어 공유 인코더 + 게이트</small></div><div class="track"><div class="bar" style="width:61.58%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.6158</div></div>
+    <div class="row"><div class="label">4 · 토크나이저 최적화<small>제주어 토큰 추가</small></div><div class="track"><div class="bar" style="width:71.84%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.7184</div></div>
+    <div class="row"><div class="label">5 · DAPT<small>제주어 MLM 재학습</small></div><div class="track"><div class="bar" style="width:74.56%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.7456</div></div>
+    <div class="row"><div class="label">6 · Hard Mining<small>loss 상위 20% 가중</small></div><div class="track"><div class="bar" style="width:80.03%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.8003</div></div>
+    <div class="row"><div class="label">7 · KoELECTRA 앙상블<small>p = α·p_dual + (1−α)·p_single</small></div><div class="track"><div class="bar final" style="width:84.04%"></div><div class="ref" style="left:29.57%"></div></div><div class="val">0.8404</div></div>
+  </div>
+  <p class="foot">최종 발표 실험 기준 수치입니다. 공개 저장소 재현은 단일 KR-BERT(0.7593)까지 확인했고 이후 단계는 진행 중입니다. 고전 ML 0.2957은 12,950행 균형 데이터, 딥러닝 단계는 127,324행 데이터의 결과라 직접 비교에는 한계가 있습니다.</p>
+</body>
+</html>

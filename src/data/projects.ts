@@ -192,6 +192,11 @@ const allProjects: Project[] = [
       { label: "최종 앙상블 (발표 실험)", value: "F1-Macro 0.8404" },
       { label: "학습 데이터", value: "127,324행 · 7클래스" },
     ],
+    architecture: {
+      image: "/projects/arch/jeju-architecture.png",
+      alt: "제주어 감정 분류 최종 모델 구조 — 제주어 단독 KoELECTRA 브랜치와 제주어/표준어 Dual-Gated KR-BERT 브랜치의 확률 가중 앙상블",
+      note: "저장소 README의 최종 아키텍처를 옮긴 그림입니다.",
+    },
     metricsNote: "저장소의 results/baseline_jeju.txt, docs/bert_improvement_report.md, README 기준입니다. 0.8404는 최종 발표 실험 수치로, 저장소 재현은 진행 중입니다.",
   },
   {
