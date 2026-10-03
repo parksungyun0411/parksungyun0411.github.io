@@ -22,24 +22,19 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - uses: actions/configure-pages@v5
 
       - run: npm ci
 
-      - name: Build (Next.js static export)
+      - name: Build (Astro static)
         run: npm run build
-        env:
-          NEXT_TELEMETRY_DISABLED: "1"
-
-      - name: Disable Jekyll (.nojekyll)
-        run: touch out/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
+          path: ./dist
 
   deploy:
     needs: build
