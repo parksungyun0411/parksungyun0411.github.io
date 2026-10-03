@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="공공 API 실패 주입 에이전트">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="14" fill="url(#bg)"/>
+  <g>
+    <rect x="60" y="80" width="56" height="40" rx="8" fill="#ffffff" opacity="0.85"/>
+    <rect x="140" y="80" width="40" height="40" rx="8" fill="#d97706"/>
+    <rect x="204" y="56" width="60" height="26" rx="6" fill="#ffffff" opacity="0.85"/>
+    <rect x="204" y="88" width="60" height="26" rx="6" fill="#ffffff" opacity="0.85"/>
+    <rect x="204" y="120" width="60" height="26" rx="6" fill="#ffffff" opacity="0.85"/>
+    <g stroke="#78350f" stroke-width="2" opacity="0.6"><line x1="116" y1="100" x2="140" y2="100"/><line x1="180" y1="100" x2="204" y2="69"/><line x1="180" y1="100" x2="204" y2="101"/><line x1="180" y1="100" x2="204" y2="133"/></g>
+    <path d="M154 92 L166 108 M166 92 L154 108" stroke="#ffffff" stroke-width="3"/>
+  </g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#78350f" opacity="0.8">
+    <text x="24" y="32">nts · fsc · dart</text>
+    <text x="24" y="178">fault injection</text>
+  </g>
+</svg>

@@ -1,61 +1,45 @@
-# parksungyun0411.github.io
+# 박성윤 · Park Sungyun Portfolio
 
-박성윤(Park Sung Yun)의 개인 포트폴리오 사이트입니다.
-데이터/AI 기반으로 사용자의 본질적인 문제를 해결하는 백엔드 엔지니어로서의 경력·프로젝트·기술 스택을 한 페이지로 소개합니다.
+개인 포트폴리오 사이트의 소스 저장소입니다. Astro + Tailwind + DaisyUI로 작성했고, `main` 브랜치에 push하면 GitHub Actions가 빌드해 GitHub Pages에 배포합니다.
 
-**사이트**: https://parksungyun0411.github.io
+- **사이트**: <https://parksungyun0411.github.io>
+- **GitHub**: <https://github.com/parksungyun0411>
 
-## 구성
+## 페이지 구성
 
-에디토리얼 지면 스타일의 싱글 페이지입니다. 마스트헤드(제호·소개·주요 기록 색인) 아래로,
-스티키 상단 내비게이션을 통해 번호가 매겨진 섹션을 탐색합니다.
+| 경로 | 설명 |
+| --- | --- |
+| `/` | Home — 소개, 대표 프로젝트 4장, 최근 기술 노트 |
+| `/projects/` | Projects — Work / Personal / Contest / Academic 탭 (공개 항목이 없는 탭은 숨김) |
+| `/projects/<slug>/` | 프로젝트 상세 — 기간·역할·소속, 배경/접근/결과/한계, 아키텍처, 핵심 수치와 출처, 스택, 관련 노트, 링크 |
+| `/notes/` | Notes — 프로젝트에서 나온 기술 정리·회고 (노트가 없으면 빈 상태 표시) |
+| `/notes/<slug>/` | 노트 본문 — 마크다운, 태그, 관련 프로젝트 링크 |
+| `/cv/` | CV — Summary, Skills, Work Experience, Featured Projects, Education, Certifications & Languages (인쇄용 CSS 포함) |
 
-- **01 경력** — DACON(기획/QA), 자빅스 인턴, 한이음 너드수학
-- **02 대표 프로젝트** — 제주어 다중감정분류 (피처 기사)
-- **03 프로젝트 색인** — liar-game, university-coursework
-- **04 기술** — 카테고리별 기술 스택
-- **05 자격·어학** — 자격증·어학 성적
-- **06 연락** — 연락처 (판권면)
+## 프로젝트 데이터
 
-타이포그래피는 Hahmlet(디스플레이) + Gothic A1(본문), 색은 종이 톤 배경 + 잉크 텍스트 +
-버밀리언 액센트 1색의 라이트 테마입니다.
+모든 프로젝트는 `src/data/projects.ts` 한 파일에서 관리하고, 홈·목록·상세·CV가 같은 데이터를 씁니다.
 
-## 기술 스택
+- `featured: true` + `featuredOrder` — 홈의 대표 프로젝트
+- `result` — 카드와 상세에 표시하는 상태 칩 (예: `진행 중`)
+- `metrics` / `metricsNote` — 출처가 있는 수치와 그 출처·한계. 측정하지 않은 프로젝트에는 넣지 않습니다
+- `draft: true` — 목록·상세·홈 어디에도 노출하지 않습니다. 진행 중인 개인 프로젝트를 숨기거나 공개할 때 이 값 하나만 바꿉니다
 
-- **Next.js 16** (App Router, 정적 export)
-- **React 19**
-- **TypeScript 5**
-- **Tailwind CSS 4**
-- ESLint 9
+기술 노트는 `src/content/notes/`의 마크다운 콘텐츠 컬렉션입니다. frontmatter의 `project`가 `projects.ts`의 slug를 가리키면 노트와 프로젝트 상세가 서로 링크됩니다. 노트의 수치는 본문 첫머리에 적은 저장소 파일에서 가져옵니다.
+
+## 도식
+
+`docs/diagrams/*.html`이 도식의 원본이고, 헤드리스 Chrome으로 렌더링한 PNG를 `public/`에 함께 커밋합니다. 각 HTML 첫머리 주석에 렌더링 명령이 있습니다.
 
 ## 로컬 실행
 
 ```bash
 npm install
-npm run dev
+npm run dev      # http://localhost:4321
+npm run build    # dist/ 정적 빌드
+npm run preview  # 빌드 결과 미리보기
 ```
 
-http://localhost:3000 에서 확인할 수 있습니다.
+## 라이선스
 
-정적 빌드는 다음으로 생성합니다 (`out/` 디렉토리에 출력):
-
-```bash
-npm run build
-```
-
-## 배포
-
-GitHub Pages로 배포됩니다.
-
-- `main` 브랜치에 push 하면 GitHub Actions 워크플로우(`.github/workflows/deploy.yml`)가 실행됩니다.
-- `next build`로 정적 export(`out/`)를 생성한 뒤 `actions/deploy-pages`로 GitHub Pages에 배포합니다.
-- user site(`parksungyun0411.github.io`)이므로 `basePath` 설정 없이 루트 경로로 서빙됩니다 (`next.config.ts` 참고).
-
-## 프로젝트 구조
-
-```
-app/            # 레이아웃, 메인 페이지, 전역 스타일(디자인 토큰)
-components/     # Masthead, SiteNav, Section 셸 + 섹션별 컴포넌트
-public/         # 정적 자산
-.github/        # GitHub Pages 배포 워크플로우
-```
+코드는 [Astrofy](https://github.com/manuelernestog/astrofy) 템플릿(MIT)을 기반으로 하고, 레이아웃 구성은 [Minsu5452.github.io](https://github.com/Minsu5452/Minsu5452.github.io)(MIT)의 구조를 참고해 재구성했습니다. 두 저작권 고지는 `LICENSE`에 유지합니다. 콘텐츠(이력·프로젝트 설명·도식)는 박성윤 본인 자료입니다.
