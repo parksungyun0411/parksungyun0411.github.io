@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="클라우드 인프라 운영·과금">
+  <defs>
+    <linearGradient id="zbc-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fef9c3"/>
+      <stop offset="1" stop-color="#fef3c7"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="14" fill="url(#zbc-bg)"/>
+  <g transform="translate(44 22)">
+    <path d="M28 56 C12 56 2 44 6 31 C10 19 24 15 33 21 C39 8 59 3 72 13 C85 5 106 13 104 30 C118 32 122 52 106 56 Z" fill="#ffffff" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+  <g stroke="#f59e0b" stroke-width="2" stroke-dasharray="3 4">
+    <path d="M104 78 V96"/>
+  </g>
+  <g transform="translate(52 98)">
+    <rect x="0" y="0" width="104" height="20" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M10 10 H44" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="84" cy="10" r="3" fill="#f59e0b"/><circle cx="94" cy="10" r="3" fill="#f59e0b"/>
+    <rect x="0" y="26" width="104" height="20" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M10 36 H44" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="84" cy="36" r="3" fill="#f59e0b"/><circle cx="94" cy="36" r="3" fill="#f59e0b"/>
+    <rect x="0" y="52" width="104" height="20" rx="4" fill="#ffffff" stroke="#f59e0b" stroke-width="2"/>
+    <path d="M10 62 H44" stroke="#fcd34d" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="84" cy="62" r="3" fill="#f59e0b"/><circle cx="94" cy="62" r="3" fill="#fde68a"/>
+  </g>
+  <g transform="translate(200 34)">
+    <path d="M0 6 A6 6 0 0 1 6 0 H62 L80 18 V124 A6 6 0 0 1 74 130 H6 A6 6 0 0 1 0 124 Z" fill="#ffffff" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M62 0 V18 H80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round"/>
+    <g stroke="#fcd34d" stroke-width="3" stroke-linecap="round">
+      <path d="M12 34 H50"/>
+      <path d="M12 50 H64"/>
+      <path d="M12 64 H56"/>
+      <path d="M12 78 H64"/>
+    </g>
+    <path d="M12 96 H68" stroke="#f59e0b" stroke-width="1.5"/>
+    <text x="12" y="116" font-family="ui-monospace, monospace" font-size="12" font-weight="700" fill="#b45309">KRW</text>
+  </g>
+</svg>

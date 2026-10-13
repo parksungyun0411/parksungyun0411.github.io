@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="공공데이터 MCP 서버 공통 시험">
+  <defs>
+    <linearGradient id="kmq-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#cffafe"/>
+      <stop offset="1" stop-color="#e0f2fe"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="14" fill="url(#kmq-bg)"/>
+  <text x="28" y="40" font-family="ui-monospace, monospace" font-size="11" font-weight="700" fill="#155e75" opacity="0.75">MCP</text>
+  <g transform="translate(28 54)">
+    <g fill="#ffffff" stroke="#0891b2" stroke-width="2">
+      <rect x="0" y="0" width="30" height="26" rx="4"/>
+      <rect x="38" y="0" width="30" height="26" rx="4"/>
+      <rect x="76" y="0" width="30" height="26" rx="4"/>
+      <rect x="114" y="0" width="30" height="26" rx="4"/>
+      <rect x="152" y="0" width="30" height="26" rx="4"/>
+      <rect x="0" y="36" width="30" height="26" rx="4"/>
+      <rect x="38" y="36" width="30" height="26" rx="4"/>
+      <rect x="76" y="36" width="30" height="26" rx="4"/>
+      <rect x="114" y="36" width="30" height="26" rx="4"/>
+      <rect x="152" y="36" width="30" height="26" rx="4" fill="#a5f3fc" stroke-width="2.5"/>
+    </g>
+    <g stroke="#67e8f9" stroke-width="2.5" stroke-linecap="round">
+      <path d="M6 9 H16 M44 9 H54 M82 9 H92 M120 9 H130 M158 9 H168"/>
+      <path d="M6 45 H16 M44 45 H54 M82 45 H92 M120 45 H130"/>
+      <path d="M158 45 H168" stroke="#0891b2"/>
+    </g>
+    <g fill="#0891b2">
+      <circle cx="23" cy="18" r="2.5"/><circle cx="61" cy="18" r="2.5"/><circle cx="99" cy="18" r="2.5"/>
+      <circle cx="137" cy="18" r="2.5"/><circle cx="175" cy="18" r="2.5"/>
+      <circle cx="23" cy="54" r="2.5"/><circle cx="61" cy="54" r="2.5"/><circle cx="99" cy="54" r="2.5"/>
+      <circle cx="137" cy="54" r="2.5"/><circle cx="175" cy="54" r="2.5"/>
+    </g>
+  </g>
+  <path d="M244 128 C244 108 230 102 212 103" fill="none" stroke="#0891b2" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="210" cy="103" r="4" fill="#0891b2"/>
+  <g transform="translate(220 128)">
+    <rect x="0" y="0" width="72" height="46" rx="8" fill="#ffffff" stroke="#0891b2" stroke-width="2.5"/>
+    <rect x="8" y="8" width="56" height="20" rx="3" fill="#ecfeff"/>
+    <text x="36" y="22" font-family="ui-monospace, monospace" font-size="11" font-weight="700" text-anchor="middle" fill="#0891b2">10/10</text>
+    <circle cx="16" cy="37" r="3" fill="#0891b2"/>
+    <circle cx="27" cy="37" r="3" fill="#a5f3fc"/>
+  </g>
+</svg>

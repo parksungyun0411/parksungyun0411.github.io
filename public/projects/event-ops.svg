@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" width="320" height="200" role="img" aria-label="경진대회 현장 운영">
+  <defs>
+    <linearGradient id="evo-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#ffedd5"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="14" fill="url(#evo-bg)"/>
+  <g transform="translate(28 30)">
+    <rect x="0" y="0" width="150" height="90" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <rect x="0" y="0" width="150" height="20" rx="8" fill="#d97706"/>
+    <rect x="0" y="12" width="150" height="8" fill="#d97706"/>
+    <text x="75" y="66" font-family="ui-monospace, monospace" font-size="30" font-weight="700" text-anchor="middle" fill="#d97706">05:00</text>
+    <path d="M-8 112 H158 L148 130 H2 Z" fill="#d97706" opacity="0.85"/>
+    <rect x="72" y="90" width="6" height="22" fill="#d97706" opacity="0.6"/>
+  </g>
+  <g transform="translate(204 40)">
+    <rect x="0" y="0" width="88" height="88" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+    <g fill="#d97706">
+      <rect x="10" y="10" width="22" height="22" rx="2"/>
+      <rect x="56" y="10" width="22" height="22" rx="2"/>
+      <rect x="10" y="56" width="22" height="22" rx="2"/>
+    </g>
+    <g fill="#ffffff">
+      <rect x="14" y="14" width="14" height="14" rx="1"/>
+      <rect x="60" y="14" width="14" height="14" rx="1"/>
+      <rect x="14" y="60" width="14" height="14" rx="1"/>
+    </g>
+    <g fill="#d97706">
+      <rect x="17" y="17" width="8" height="8"/>
+      <rect x="63" y="17" width="8" height="8"/>
+      <rect x="17" y="63" width="8" height="8"/>
+      <rect x="38" y="10" width="6" height="6"/>
+      <rect x="44" y="22" width="6" height="6"/>
+      <rect x="38" y="38" width="6" height="6"/>
+      <rect x="50" y="44" width="6" height="6"/>
+      <rect x="62" y="38" width="6" height="6"/>
+      <rect x="72" y="50" width="6" height="6"/>
+      <rect x="44" y="56" width="6" height="6"/>
+      <rect x="56" y="62" width="6" height="6"/>
+      <rect x="68" y="68" width="6" height="6"/>
+      <rect x="44" y="72" width="6" height="6"/>
+      <rect x="10" y="40" width="6" height="6"/>
+      <rect x="22" y="44" width="6" height="6"/>
+    </g>
+    <text x="44" y="110" font-family="ui-monospace, monospace" font-size="11" text-anchor="middle" fill="#92400e" opacity="0.7">VOTE</text>
+  </g>
+</svg>
