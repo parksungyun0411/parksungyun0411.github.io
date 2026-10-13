@@ -8,17 +8,17 @@ const latestNotes = (await getCollection("notes"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 const accentOf = (slug?: string) =>
-  projects.find((p) => p.slug === slug)?.color ?? "#6366f1";
+  projects.find((p) => p.slug === slug)?.color ?? "#2563eb";
 ---
 
 <BaseLayout sideBarActiveItemID="home">
   <div class="pb-12 mt-5">
     <div class="text-5xl font-bold">박성윤 · Park Sungyun</div>
-    <div class="text-3xl py-3 font-bold break-keep">LLM 에이전트와 ML 시스템을 만들고, 실제로 돌아가는 서비스로 배포합니다.</div>
+    <div class="text-3xl py-3 font-bold break-keep">데이터가 들어와서 쓰이기까지의 길을 만들고, 그 길이 어디서 끊기는지 먼저 찾습니다.</div>
     <div class="py-2">
       <p class="text-lg">
-        데이콘 Data Science팀 매니저로 <b>공공 데이터 분석 과제 2건을 PL</b>로 맡고 있습니다.<br />
-        법령 RAG 에이전트부터 사고 위험 통계 검증, <b>폐쇄망 클라우드 배포</b>까지<br />
+        데이콘 운영·개발 파트에서 <b>AI 해커톤 플랫폼의 평가 시스템</b>을 기획부터 개발 환경 배포까지 맡고, 플랫폼 전반의 주간 QA를 합니다.<br />
+        공공기관 납품 교통사고 위험 예측 플랫폼의 <b>모델 탑재부터 망분리 환경 배포</b>까지,<br />
         모델이 실제 서비스로 이어지는 구간을 만들어 왔습니다.
       </p>
     </div>
@@ -67,7 +67,7 @@ const accentOf = (slug?: string) =>
   <div class="mt-14">
     <div class="text-3xl w-full font-bold mb-2">기술 노트</div>
     <p class="text-sm opacity-70 mb-5">
-      프로젝트에서 나온 설계 판단의 이유와 실측, 현장에서 배운 점을 기록합니다.
+      프로젝트에서 내린 판단을 문제, 선택지, 고른 이유, 남은 한계의 순서로 기록합니다.
     </p>
     <div class="grid gap-3">
       {
