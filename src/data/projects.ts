@@ -401,6 +401,154 @@ export const projects: Project[] = [
     ],
   },
 
+  {
+    slug: "minwon-rag",
+    title: "민원 RAG 검색 실험",
+    category: "personal",
+    badge: "2026 · 개인",
+    result: "진행 중",
+    period: "2026.10 – 현재",
+    org: "개인 프로젝트 · 공공데이터 (국민권익위원회 민원정책 질의응답)",
+    summary:
+      "국민권익위원회 민원정책 질의응답에 실제로 올라온 시민 질의로 dense 검색, 한국어 BM25 하이브리드, 크로스인코더 리랭커를 차례로 비교하려는 프로젝트. 수집기·전처리·검색·평가 코드와 단위 테스트까지 작성했고, 공공데이터포털 인증키를 받기 전이라 실데이터 수집과 측정은 하지 않아 평가 표는 비어 있다.",
+    hero: "/projects/minwon-rag.svg",
+    github: "https://github.com/parksungyun0411/minwon-rag",
+    color: "#0e7490",
+    stack: ["Python", "Kiwi + BM25", "sentence-transformers", "KURE-v1 · bge-m3", "bge-reranker-v2-m3", "RRF", "OpenSearch (선택)", "rag-eval-harness", "pytest"],
+    architecture: {
+      image: "/projects/minwon-rag-arch.png",
+      alt: "minwon-rag 아키텍처: 수집, 시점 분할과 인용 법령 라벨, 검색 설정 7종, rag-eval-harness 평가",
+      note: "수집기가 민원을 받아 시점으로 나누고, 기관 답변의 인용 법령으로 관련성 라벨을 만든 뒤, 검색 설정 7종을 같은 골든셋으로 rag-eval-harness에 넘깁니다.",
+    },
+    body: [
+      {
+        heading: "배경",
+        text: "민원 질의는 시민이 쓴 구어체이고 기관 답변은 행정 문체입니다. 같은 내용이라도 쓰는 단어가 달라 어휘 일치에 기대는 BM25와 의미 유사도에 기대는 dense 검색의 결과가 갈립니다. 평가 질의는 LLM으로 합성하지 않고 실제 민원을 그대로 쓰고, 정답 라벨은 기관 답변에 붙은 인용 법령으로 자동 생성합니다.",
+      },
+      {
+        heading: "구현한 것",
+        text: "하루 호출 예산과 이어 받기를 갖춘 목록·항목 API 수집기, 이중 이스케이프된 HTML 해제와 정형 인사말 제거, 기준일 이전 민원은 코퍼스로 이후 민원은 평가 질의로 나누는 시점 분할, 조문 일치와 법령명 일치를 등급으로 나눈 관련성 라벨, 그리고 bm25·dense 2종·하이브리드 2종·하이브리드+리랭커 2종의 설정 매트릭스를 만들었습니다. 지표와 통계, 보고서는 rag-eval-harness를 의존성으로 씁니다.",
+      },
+      {
+        heading: "설계 판단",
+        text: "평가 질의가 코퍼스에 섞이는 누수를 막기 위해 무작위 분할 대신 시점 분할을 택했습니다. 처리기관만 같은 민원은 관련 문서로 치지 않았고, 관련 문서가 100건을 넘는 질의는 평가에서 뺐습니다. BM25는 Docker 없이 돌아가도록 Kiwi 분석 결과를 희소 행렬로 미리 계산해 프로세스 안에서 구현했고, 하이브리드 결합은 점수 정규화 방식을 고를 필요가 없는 RRF를 썼습니다.",
+      },
+      {
+        heading: "상태와 한계",
+        text: "실데이터로 측정하지 않았습니다. 응답을 감싸는 키는 기관 참고문서 예시로만 확인했고, 답변에 인용 법령이 붙은 비율도 아직 모릅니다. 비율이 낮으면 평가 질의 후보가 부족해집니다. OpenSearch 백엔드와 docker-compose는 작성만 했습니다. 다음 단계는 인증키 발급 뒤 수집, 색인, 평가, 보고서 생성입니다.",
+      },
+    ],
+  },
+  {
+    slug: "vendor-check-agent",
+    title: "거래처 점검 에이전트 복구율 실험",
+    category: "personal",
+    badge: "2026 · 개인",
+    result: "진행 중",
+    period: "2026.10 – 현재",
+    org: "개인 프로젝트 · 공공 API (국세청 · 금융위원회 · OpenDART)",
+    summary:
+      "상호를 받아 국세청·금융위원회·OpenDART 공공 API로 거래처를 점검하는 LangGraph 에이전트와 고정 순서 파이프라인을 같은 MCP 툴 위에 두고, 공공 API에서 실제로 일어나는 실패를 주입해 복구 전략별 회복률과 조용한 오답 비율을 재려는 프로젝트. MCP 서버, 실패 주입 프록시, 그래프, 실험 러너까지 구현했고 기관 API 키가 없어 측정은 하지 않았다.",
+    hero: "/projects/vendor-check-agent.svg",
+    github: "https://github.com/parksungyun0411/vendor-check-agent",
+    color: "#b45309",
+    stack: ["Python", "LangGraph", "MCP Python SDK", "SQLite checkpointer", "HTTPX", "Starlette", "Anthropic SDK", "pytest"],
+    architecture: {
+      image: "/projects/vendor-check-agent-arch.png",
+      alt: "vendor-check-agent 아키텍처: 실험 러너, 대조군 파이프라인과 LangGraph 에이전트, 공유 복구 전략, MCP 서버, 실패 주입 프록시, 기관 API 클라이언트",
+      note: "두 시스템은 같은 MCP 툴과 같은 복구 코드를 쓰므로 결과 차이는 그래프 구조에서만 생깁니다. 실패 주입 프록시는 툴과 기관 API 사이에 끼웁니다.",
+    },
+    body: [
+      {
+        heading: "배경",
+        text: "공공 API의 실패는 모양이 기관마다 다릅니다. OpenDART는 오류를 HTTP 200 응답 본문의 status 코드로 알려 주고, 공공데이터포털 게이트웨이는 별도 봉투에 오류 코드를 담아 보냅니다. HTTP 상태만 확인하는 코드는 이런 응답을 정상으로 읽고 미등록이나 조회 결과 없음으로 보고할 수 있습니다. 그래서 복구율과 함께, 툴이 실패했는데 정상 값처럼 보고된 비율을 따로 잽니다.",
+      },
+      {
+        heading: "구현한 것",
+        text: "기관 API 클라이언트 3종과 기관별 툴 5개를 노출하는 MCP 서버, timeout·5xx·HTTP 200 오류 본문·일일 한도·형식 오류·부분 응답 여섯 유형을 주입하는 프록시, 무대응·재시도·대체 경로·체크포인트 재개 네 가지 복구 전략, 고정 순서 대조군, 그리고 동명 법인 확인 interrupt와 상장 여부 분기, 기관 병렬 조회, SQLite 체크포인터 재개를 담은 LangGraph 에이전트를 만들었습니다. 실험 러너는 시나리오 31개 × 전략 4종 × 시스템 2개를 돌려 점검 한 건당 한 줄을 남기고, 키 없이 도는 가짜 업스트림 위에서 전체 경로를 테스트합니다.",
+      },
+      {
+        heading: "설계 판단",
+        text: "툴은 실패해도 예외를 던지지 않고 분류된 오류를 데이터로 돌려줍니다. MCP 경계를 지나도 실패 종류가 남아야 두 시스템을 같은 기준으로 비교할 수 있기 때문입니다. 오류 판별은 HTTP 상태가 아니라 응답 본문을 기준으로 했고, 임의 키로 직접 호출해 두 기관의 오류 형식을 확인했습니다. 경로 결정은 규칙으로 하고 LLM은 최종 보고서만 쓰게 해서, LLM이 값을 바꾸면 그대로 조용한 오답 비율에 잡히도록 했습니다.",
+      },
+      {
+        heading: "상태와 한계",
+        text: "측정 결과가 없습니다. 정답 생성과 실험은 공공데이터포털과 OpenDART 키를 발급받은 뒤에 돌립니다. 금융위 응답 구조, 상장 구분 코드, 국세청의 한도 초과 응답은 확인하지 못해 코드에 미확인으로 표시했습니다. 실험에서 동명 법인 선택은 정답을 아는 자동 승인자가 하고, 실패는 점검마다 한 기관에 하나씩만 겁니다.",
+      },
+    ],
+  },
+  {
+    slug: "jeju-emotion-lora",
+    title: "제주어 감정 분류: LoRA 소형 LLM 대 인코더 앙상블",
+    category: "personal",
+    badge: "2026 · 개인",
+    result: "진행 중",
+    period: "2026.10 – 현재",
+    org: "개인 프로젝트 · 졸업 프로젝트와 같은 데이터·분할·시드",
+    summary:
+      "졸업 프로젝트 제주어 7감정 분류와 같은 데이터, 분할, 시드에서 소형 LLM 3종을 LoRA로 학습해 KoELECTRA + Dual KR-BERT 앙상블과 비교하고, 병합과 AWQ 4bit 양자화, vLLM 서빙까지 이어서 정확도와 처리량, 100만 건당 비용을 한 표에 놓으려는 프로젝트. 코드와 테스트는 있고 GPU 실행은 하지 않아 결과 표는 모두 측정 전.",
+    hero: "/projects/jeju-emotion-lora.svg",
+    github: "https://github.com/parksungyun0411/jeju-emotion-lora",
+    color: "#7c3aed",
+    stack: ["Python", "PyTorch", "Transformers", "PEFT (LoRA)", "TRL", "llm-compressor (AWQ)", "vLLM", "scikit-learn", "pytest"],
+    body: [
+      {
+        heading: "배경",
+        text: "원 데이터의 감정 라벨은 GPT-4o가 붙였습니다. 그 라벨로만 평가하면 GPT-4o를 얼마나 잘 따라 하는가를 재게 되므로, test 분할에서 뽑은 280건에 사람이 다시 라벨을 붙인 평가셋을 따로 두고 두 라벨로 모두 잽니다. 후보 모델은 상업 이용이 가능한 라이선스만 골랐고 비상업 라이선스 모델은 제외했으며, 커밋 해시를 고정했습니다.",
+      },
+      {
+        heading: "구현한 것",
+        text: "원 프로젝트와 같은 7:1:2 층화 분할을 재현하고 원 저장소의 분할 함수와 행 단위로 대조하는 검증, 감정별 층화와 모델 불일치 문항을 우선 뽑는 사람 검수 표본 도구와 블라인드 터미널 라벨링, 제로샷·퓨샷 기준선, 라벨 이름에만 손실을 주는 LoRA 학습과 어댑터 병합, train 분할만으로 보정하는 AWQ 양자화, 출력을 7개 라벨로 제한하는 vLLM 평가와 부하 측정, GPU 시간당 요금을 입력으로 받는 비용 표 생성을 만들었습니다.",
+      },
+      {
+        heading: "설계 판단",
+        text: "QLoRA 대신 bf16 LoRA를 썼습니다. 4bit로 학습하면 병합 대상 가중치가 원본과 달라져 양자화 전후 비교에 학습 단계의 양자화가 섞이기 때문입니다. 생성 자체를 라벨 이름으로 제한해 모델 간 차이가 출력 형식 실수가 아니라 분류에서 나오게 했고, 사람 검수는 GPT-4o 라벨을 보지 않는 블라인드를 기본으로 두었습니다. 학습 환경과 서빙 환경은 의존성 충돌 때문에 나눴습니다.",
+      },
+      {
+        heading: "상태와 한계",
+        text: "GPU 단계는 한 번도 실행하지 않았습니다. 로컬에서 확인한 것은 분할, 프롬프트, 파싱, 지표, 비용 계산과 CPU에서 작은 랜덤 모델로 학습부터 생성까지 도는 것까지입니다. 원 라벨링 파일을 아직 확보하지 못해 실제 데이터로 분할을 대조하지 못했고, 사람 검수 라벨도 없습니다. 원 앙상블의 가중치가 test 분할에서 고른 값이라 기준선은 그만큼 낙관적입니다.",
+      },
+    ],
+  },
+  {
+    slug: "cpu-sllm-k8s",
+    title: "CPU 전용 쿠버네티스 소형 LLM 서빙",
+    category: "personal",
+    badge: "2026 · 개인",
+    result: "진행 중",
+    period: "2026.10 – 현재",
+    org: "개인 프로젝트 · Amazon EKS (배포 전) · 공개 모델",
+    summary:
+      "GPU가 없는 쿠버네티스 노드에서 4bit 양자화 소형 LLM을 llama.cpp 서버로 서빙하고, CPU limit과 스레드 수, CFS 스로틀링이 생성 처리량을 얼마나 줄이는지와 HPA가 계단식 부하에 어떻게 반응하는지 재려는 프로젝트. 모델 내장 이미지, Helm 차트, EKS 배포 파이프라인, 부하 스크립트, 수집기와 리포트 생성기까지 구현했고 EKS 배포와 측정은 하지 않았다.",
+    hero: "/projects/cpu-sllm-k8s.svg",
+    github: "https://github.com/parksungyun0411/cpu-sllm-k8s",
+    color: "#2563eb",
+    stack: ["llama.cpp (GGUF Q4_K_M)", "Docker", "Kubernetes", "Helm", "Amazon EKS", "Amazon ECR", "eksctl", "GitHub Actions (OIDC)", "k6", "Prometheus", "Python · pandas"],
+    architecture: {
+      image: "/projects/cpu-sllm-k8s-arch.png",
+      alt: "cpu-sllm-k8s 빌드·배포·측정 흐름: 모델 내장 이미지, ECR, Helm 배포, k6 부하, Prometheus와 kubectl 수집, 리포트",
+      note: "이미지 빌드와 ECR 푸시, Helm 배포는 수동 실행 워크플로가 맡고, 측정은 k6 부하와 Prometheus·kubectl 수집기를 시간축으로 합쳐 리포트로 만듭니다.",
+    },
+    body: [
+      {
+        heading: "배경",
+        text: "CPU 추론은 GPU 서빙과 쿠버네티스 설정이 맞물리는 방식이 다릅니다. 추론이 CPU에 묶여 있어 HPA의 기본 지표인 CPU 사용률이 실제 부하를 따라가는지 볼 수 있고, CPU limit을 스레드 수보다 낮게 주면 CFS 쿼터를 소진한 스레드가 주기 끝까지 멈춰 requests와 limits 설정이 처리량 차이로 드러납니다. 모델 적재에 시간이 걸려 프로브와 롤링 업데이트 설정도 동작에 영향을 줍니다. 이 세 가지를 같은 이미지와 같은 부하에서 비교하는 것이 목표입니다.",
+      },
+      {
+        heading: "구현한 것",
+        text: "Hugging Face 고정 커밋에서 받은 GGUF 모델의 sha256을 검증해 llama.cpp 공식 CPU 서버 이미지에 넣는 멀티스테이지 Dockerfile, Deployment·Service·ConfigMap·프로브·HPA·ServiceMonitor를 담은 Helm 차트, 관리형 노드 그룹 하나와 metrics-server만 두는 eksctl 설정, GitHub OIDC 역할과 ECR을 만드는 스크립트, lint와 매니페스트 스키마 검증을 돌리는 CI와 수동 실행 전용 배포 워크플로, 고정 동시성과 계단식 도착률 k6 스크립트, CFS 스로틀 비율과 서버 측 토큰 처리량을 기록하는 수집기, 히트맵과 시계열을 그리는 리포트 생성기를 만들었습니다.",
+      },
+      {
+        heading: "설계 판단",
+        text: "모델은 런타임 다운로드 대신 이미지에 넣었습니다. 망이 분리된 환경에서는 파드가 뜰 때 외부에서 모델을 받을 수 없기 때문입니다. startup 프로브가 모델 적재를 기다린 뒤 liveness가 넘겨받도록 역할을 나눴고, 롤링 업데이트는 새 파드가 준비되기 전에 기존 파드를 내리지 않게 했습니다. HPA 기본 설정은 requests와 limits를 같게 둔 Guaranteed로 하고 Burstable 비교는 별도 실행으로 분리했습니다. 배포는 클러스터가 떠 있는 동안만 비용이 들도록 수동 실행으로 제한하고, 장기 액세스 키 대신 OIDC로 역할을 맡습니다.",
+      },
+      {
+        heading: "상태와 한계",
+        text: "EKS 배포, 이미지 빌드, IAM 스크립트, 실험 스크립트는 한 번도 실행하지 않았습니다. 로컬에서 확인한 범위는 lint, 매니페스트 스키마 검증, 단위 테스트, k6 스크립트 파싱까지이고, 작업 환경에 Docker가 없어 이미지도 빌드해 보지 않았습니다. 측정 결과가 없으므로 이 저장소는 CPU limit이나 스레드 수가 처리량에 미치는 영향에 대해 아직 아무것도 보여 주지 않습니다. HPA는 CPU 사용률 기준 한 종류만 구현했고 노드 수는 최대 2대로 고정했습니다.",
+      },
+    ],
+  },
+
   // ───────────────────────── Academic ─────────────────────────
   {
     slug: "jeju-emotion-analysis",
