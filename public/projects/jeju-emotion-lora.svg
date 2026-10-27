@@ -35,5 +35,5 @@
     <circle cx="216" cy="172" r="6" fill="#818cf8"/>
     <circle cx="244" cy="172" r="6" fill="#a78bfa"/>
   </g>
-  <text x="160" y="192" font-family="ui-monospace, monospace" font-size="10" text-anchor="middle" fill="#6d28d9">7 emotions · 측정 전</text>
+  <text x="160" y="192" font-family="ui-monospace, monospace" font-size="10" text-anchor="middle" fill="#6d28d9">7 emotions · T4 측정</text>
 </svg>
